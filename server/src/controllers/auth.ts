@@ -23,7 +23,7 @@ export const postLogin = async (req: Request, res: Response) => {
 
     const user = await getUserByEmail(email);
     if (!user) {
-      return res.sendStatus(400).json({ Message: "No such user exists" });
+      return res.status(400).json({ Message: "No such user exists" });
     }
 
     // Compare the password
@@ -42,7 +42,6 @@ export const postLogin = async (req: Request, res: Response) => {
     // TODO: where is the cookie saved and how it is user?
     res.cookie("myApp_token", token, {
       domain: "localhost",
-      path: "/",
       maxAge: 4 * 60 * 60 * 1000, // 4 hours in milliseconds
       httpOnly: true, // to prevent client side JS from accessing the cookie
       secure: true, // to require HTTPS connection for cookie transmission

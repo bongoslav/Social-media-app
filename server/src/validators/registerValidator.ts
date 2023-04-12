@@ -1,6 +1,6 @@
 import { check } from "express-validator";
 
-const registerValidator = [
+export const registerValidator = [
   check("username")
     .notEmpty()
     .withMessage("Username is required")
@@ -27,5 +27,3 @@ const registerValidator = [
       return true;
     }),
 ];
-
-export default registerValidator;
