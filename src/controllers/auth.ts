@@ -7,10 +7,6 @@ import { get } from "lodash";
 import dotenv from "dotenv";
 dotenv.config();
 
-export const getLogin = async (req: Request, res: Response) => {
-  res.sendFile("login.html", { root: "public" });
-};
-
 export const postLogin = async (req: Request, res: Response) => {
   const JWT_SECRET: Secret = process.env.JWT_SECRET || "";
   const { email, password } = req.body;
@@ -79,8 +75,6 @@ export const postLogout = async (req: Request, res: Response) => {
     res.status(500).send("Server error");
   }
 };
-
-export const getRegister = async (req: Request, res: Response) => {};
 
 export const postRegister = async (req: Request, res: Response) => {
   const { email, username, password } = req.body;
