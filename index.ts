@@ -1,10 +1,11 @@
 import express from "express";
-import mainRoutes from "./src/routes/index";
-import authRoutes from "./src/routes/auth";
 import mongoose from "mongoose";
 import session from "express-session";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
+import path from "path";
+import mainRoutes from "src/routes";
+import authRoutes from "src/routes";
 dotenv.config();
 
 const PORT: number = 3000;
@@ -12,6 +13,7 @@ const mongoURLEnv = process.env.mongoURL || "";
 
 const app = express();
 
+app.use(express.static("./public/"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(

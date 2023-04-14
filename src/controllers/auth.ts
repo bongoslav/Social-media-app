@@ -8,7 +8,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export const getLogin = async (req: Request, res: Response) => {
-  res.status(200).json({ Message: "Login page" });
+  res.sendFile("login.html", { root: "public" });
 };
 
 export const postLogin = async (req: Request, res: Response) => {
@@ -83,7 +83,7 @@ export const postLogout = async (req: Request, res: Response) => {
 export const getRegister = async (req: Request, res: Response) => {};
 
 export const postRegister = async (req: Request, res: Response) => {
-  const { email, username, password, confirmPassword } = req.body;
+  const { email, username, password } = req.body;
 
   try {
     const errors = validationResult(req);

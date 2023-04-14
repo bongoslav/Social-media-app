@@ -1,1 +1,1 @@
-# mern-fullstack-app
+# fullstack-app
