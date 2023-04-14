@@ -1,1 +1,1 @@
-# fullstack-app
+# ts-rest-api
