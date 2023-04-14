@@ -131,3 +131,5 @@ dist
 
 # dotenv
 .env
+
+notes.md
