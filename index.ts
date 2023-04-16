@@ -1,11 +1,10 @@
-import express from "express";
+import express, * as express_test from "express"
 import mongoose from "mongoose";
 import session from "express-session";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
-import path from "path";
-import mainRoutes from "src/routes";
-import authRoutes from "src/routes";
+import mainRoutes from "./src/routes";
+import authRoutes from "./src/routes";
 dotenv.config();
 
 const PORT: number = 3000;

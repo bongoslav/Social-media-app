@@ -1,11 +1,10 @@
 {
-  "name": "fullstack-mern",
+  "name": "typescript-rest-api",
   "version": "1.0.0",
   "description": "",
-  "main": "server/src/app.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon --watch server --exec ts-node server/index.ts"
+    "start": "nodemon --watch server --exec ts-node index.ts"
   },
   "keywords": [],
   "author": "Borislav",
@@ -27,6 +26,7 @@
   "devDependencies": {
     "@types/cookie-parser": "^1.4.3",
     "@types/express-session": "^1.17.7",
+    "@types/jest": "^29.5.0",
     "@types/jsonwebtoken": "^9.0.1",
     "@types/lodash": "^4.14.192",
     "@types/node": "^18.15.11",
