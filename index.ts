@@ -1,10 +1,11 @@
-import express, * as express_test from "express"
+import express from "express";
 import mongoose from "mongoose";
 import session from "express-session";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import mainRoutes from "./src/routes";
-import authRoutes from "./src/routes";
+import authRoutes from "./src/routes/auth";
+
 dotenv.config();
 
 const PORT: number = 3000;
@@ -33,6 +34,10 @@ mongoose.connection.on("error", (error: Error) => {
 });
 
 app.use("/", mainRoutes);
-app.use("/auth/", authRoutes);
+app.use("/auth", authRoutes);
 
-app.listen(PORT, () => console.log(`App is running on port ${PORT}`));
+const server = app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
+
+export default server;

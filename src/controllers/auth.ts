@@ -14,18 +14,18 @@ export const postLogin = async (req: Request, res: Response) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(422).json({ errors: errors.array() });
+      return res.status(422).send(errors.array());
     }
 
     const user = await getUserByEmail(email);
     if (!user) {
-      return res.status(400).json({ Message: "No such user exists" });
+      return res.status(400).json({ error: "No such user exists" });
     }
 
     // Compare the password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(401).json({ msg: "Invalid email or password" });
+      return res.status(401).json({ error: "Invalid email or password" });
     }
 
     const token = jwt.sign({ userId: user._id }, JWT_SECRET, {
@@ -82,13 +82,13 @@ export const postRegister = async (req: Request, res: Response) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(422).json({ errors: errors.array() });
+      return res.status(422).send(errors.array());
     }
 
     // Check if user already exists
     let user = await User.findOne({ $or: [{ email }, { username }] });
     if (user) {
-      return res.status(400).json({ msg: "User already exists" });
+      return res.status(400).json({ error: "User already exists" });
     }
 
     // Hash password
@@ -106,6 +106,6 @@ export const postRegister = async (req: Request, res: Response) => {
     return res.status(201).json(user);
   } catch (err: any) {
     console.error(err.message);
-    res.status(500).send("Server error");
+    res.status(500).json({ error: "Server error" });
   }
 };
