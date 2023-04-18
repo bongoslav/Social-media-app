@@ -25,7 +25,7 @@ export const postLogin = async (req: Request, res: Response) => {
     // Compare the password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(401).json({ error: "Invalid email or password" });
+      return res.status(401).json({ error: "Incorrect password" });
     }
 
     const token = jwt.sign({ userId: user._id }, JWT_SECRET, {
@@ -35,10 +35,9 @@ export const postLogin = async (req: Request, res: Response) => {
     user.tokens.push(token);
     await user.save();
 
-    // TODO: where is the cookie saved and how it is user?
     res.cookie("myApp_token", token, {
       domain: "localhost",
-      maxAge: 4 * 60 * 60 * 1000, // 4 hours in milliseconds
+      maxAge: 4 * 60 * 60 * 1000,
       httpOnly: true, // to prevent client side JS from accessing the cookie
       secure: true, // to require HTTPS connection for cookie transmission
     });
@@ -53,13 +52,7 @@ export const postLogin = async (req: Request, res: Response) => {
 export const postLogout = async (req: Request, res: Response) => {
   try {
     const currentUserId = get(req, "user._id");
-    if (!currentUserId) {
-      return res.status(401).json({ msg: "Unauthorized" });
-    }
     const currentUser = await User.findById(currentUserId);
-    if (!currentUser) {
-      return res.status(400).json({ Message: "No such user exists" });
-    }
 
     // remove the token from the user's tokens array
     // session === cookie[myApp_token]

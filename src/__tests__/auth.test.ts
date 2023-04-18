@@ -2,21 +2,40 @@ import request from "supertest";
 import server from "../../index";
 import User from "../models/User";
 
-const validRegisterData = {
+interface LoginData {
+  email: string;
+  password: string;
+}
+
+interface RegisterData {
+  email: string;
+  password: string;
+  confirmPassword: string;
+  username: string;
+}
+
+interface ErrorResponse {
+  value: string;
+  msg: string;
+  param: string;
+  location: string;
+}
+
+const validRegisterData: RegisterData = {
   username: "validUser",
   email: "validuser@example.com",
   password: "validPassword",
   confirmPassword: "validPassword",
 };
 
-const invalidRegisterData = {
+const invalidRegisterData: RegisterData = {
   username: "",
   email: "invalidEmail",
   password: "dsa",
   confirmPassword: "asd",
 };
 
-const invalidRegisterDataResponse = [
+const invalidRegisterDataResponse: ErrorResponse[] = [
   {
     value: "",
     msg: "Username is required",
@@ -48,6 +67,36 @@ const invalidRegisterDataResponse = [
     location: "body",
   },
 ];
+
+const validLoginData: LoginData = {
+  email: "validuser@example.com",
+  password: "validPassword",
+};
+
+const invalidLoginData: LoginData = {
+  email: "invalidEmail",
+  password: "dsa",
+};
+
+const invalidLoginDataResponse: ErrorResponse[] = [
+  {
+    value: "invalidEmail",
+    msg: "Invalid email address",
+    param: "email",
+    location: "body",
+  },
+  {
+    value: "dsa",
+    msg: "Password should be at least 6 characters long",
+    param: "password",
+    location: "body",
+  },
+];
+
+const nonExistingUserData: LoginData = {
+  email: "someEmail@email.com",
+  password: "aValidPassword",
+};
 
 afterAll(async () => {
   await server.close();
@@ -84,33 +133,82 @@ describe("user registration", () => {
 });
 
 describe("user login", () => {
-  // ...
-  // ...
-  // creating a user session (cookie?)
+  describe("given all is valid", () => {
+    test("should return user as a json, status 200 and the cookie", async () => {
+      const response = await request(server)
+        .post("/auth/login")
+        .send(validLoginData);
+      const user = await User.findOne({ email: validLoginData.email });
+      expect(response.status).toEqual(200);
+      expect(response.body).toMatchObject({
+        _id: user._id.toString(),
+        email: user.email,
+      });
+
+      const cookie = response.headers["set-cookie"][0];
+      expect(cookie).toMatch(/^myApp_token=.+/);
+    });
+  });
+
+  describe("given there is validation fail", () => {
+    test("should return status code 422 and the errors messages", async () => {
+      const response = await request(server)
+        .post("/auth/login")
+        .send(invalidLoginData);
+      expect(response.status).toEqual(422);
+      expect(response.body).toEqual(invalidLoginDataResponse);
+    });
+  });
+
+  describe("given user does not exist", () => {
+    test("should return status code 400 and the error message", async () => {
+      const response = await request(server)
+        .post("/auth/login")
+        .send(nonExistingUserData);
+      expect(response.status).toEqual(400);
+      expect(response.body).toEqual({ error: "No such user exists" });
+    });
+  });
+
+  describe("given password is incorrect", () => {
+    test("should return status code 401 and the error message", async () => {
+      const response = await request(server)
+        .post("/auth/login")
+        .send({ ...validLoginData, password: "somePassword" });
+      expect(response.status).toEqual(401);
+      expect(response.body).toEqual({ error: "Incorrect password" });
+    });
+  });
 });
 
-describe("user logout", () => {});
+describe("user logout", () => {
+  let cookie: string;
 
-/*
- describe("user login", () => {
-    it("should return an authentication token", async () => {
-      const response = await request(app).post("/auth/login").send({
-        email: userData.email,
-        password: userData.password,
+  beforeEach(async () => {
+    // Log in a user to obtain a valid cookie
+    const loginResponse = await request(server)
+      .post("/auth/login")
+      .send(validLoginData);
+    cookie = loginResponse.headers["set-cookie"][0];
+  });
+
+  describe("if not errors", () => {
+    test("should return status code 200 and clear the cookie", async () => {
+      const response = await request(server)
+        .post("/auth/logout")
+        .set("Cookie", cookie);
+      expect(response.status).toEqual(200);
+      expect(response.body).toEqual({ msg: "Logged out successfully" });
+    });
+
+    describe("user is not logged in", () => {
+      test("should return status code 401", async () => {
+        const response = await request(server).post("/auth/logout");
+        expect(response.status).toEqual(401);
+        expect(response.body).toEqual({
+          msg: "No token, authorization denied",
+        });
       });
-      expect(response.status).toEqual(200);
-      expect(response.body.token).toBeDefined();
     });
   });
-
-  describe("user profile", () => {
-    it("should return the user's profile information", async () => {
-      const response = await request(app)
-        .get("/auth/profile")
-        .set("Authorization", `Bearer ${authToken}`);
-      expect(response.status).toEqual(200);
-      expect(response.body.username).toEqual(userData.username);
-      expect(response.body.email).toEqual(userData.email);
-    });
-  });
-*/
+});
