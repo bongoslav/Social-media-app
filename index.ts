@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import session from "express-session";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
-import mainRoutes from "./src/routes";
+import postRoutes from "./src/routes/post";
 import authRoutes from "./src/routes/auth";
 
 dotenv.config();
@@ -33,7 +33,7 @@ mongoose.connection.on("error", (error: Error) => {
   console.log(error);
 });
 
-app.use("/", mainRoutes);
+app.use("/posts", postRoutes);
 app.use("/auth", authRoutes);
 
 const server = app.listen(PORT, () => {
