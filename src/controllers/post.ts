@@ -4,8 +4,7 @@ import User from "../models/User";
 import { get } from "lodash";
 
 export const getPosts = async (req: Request, res: Response) => {
-  const posts = await Post.find();
-  res.status(200).json({ posts });
+  res.status(200).json(res.locals.paginatedResult);
 };
 
 export const addPost = async (req: Request, res: Response) => {
