@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import Post from "../models/Post";
+import { Comment } from "../models/Post";
 import User from "../models/User";
 import { get } from "lodash";
 
@@ -26,4 +27,35 @@ export const addPost = async (req: Request, res: Response) => {
   await post.save();
 
   res.status(201).json(post);
+};
+
+export const addComment = async (req: Request, res: Response) => {
+  const postId: string = req.params.id;
+  let userId: { _id: string };
+  userId = get(req, "user._id");
+
+  try {
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    const content: string = req.body.content;
+    if (!content) {
+      return res.status(400).json({ message: "Content is required" });
+    }
+
+    const comment: Comment = {
+      author: userId,
+      content: content,
+    };
+
+    post.comments.push(comment);
+    await post.save();
+
+    return res.status(201).json({ message: "Comment added successfully" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server Error" });
+  }
 };
