@@ -10,7 +10,7 @@ export const getPosts = async (req: Request, res: Response) => {
 
 export const addPost = async (req: Request, res: Response) => {
   const content: string = req.body.content;
-  let user: { _id: string };
+  let user: { _id: string }; // an object with the user's id
   user = get(req, "user._id");
 
   const post = new Post({
@@ -31,8 +31,7 @@ export const addPost = async (req: Request, res: Response) => {
 
 export const addComment = async (req: Request, res: Response) => {
   const postId: string = req.params.id;
-  let userId: { _id: string };
-  userId = get(req, "user._id");
+  const userId: string = get(req, "user._id");
 
   try {
     const post = await Post.findById(postId);
@@ -54,6 +53,26 @@ export const addComment = async (req: Request, res: Response) => {
     await post.save();
 
     return res.status(201).json({ message: "Comment added successfully" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server Error" });
+  }
+};
+
+export const addLike = async (req: Request, res: Response) => {
+  const postId: string = req.params.id;
+  const userId: string = get(req, "user._id");
+
+  try {
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    post.likes.push(userId);
+    await post.save();
+
+    return res.status(201).json({ message: "Like added successfully" });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Server Error" });

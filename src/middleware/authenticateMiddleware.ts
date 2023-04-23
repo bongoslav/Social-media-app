@@ -27,7 +27,7 @@ export const isAuthenticated = async (
     }
 
     // Add user object to request
-    merge(req, { user: user });
+    merge(req, { user });
 
     next();
   } catch (err) {

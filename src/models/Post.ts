@@ -4,7 +4,7 @@ import { IUser } from "./User";
 export interface IPost extends Document {
   author: IUser["_id"];
   content: string;
-  likes: number;
+  likes: string[];
   comments: Comment[];
 }
 
@@ -16,10 +16,14 @@ export interface Comment {
 const PostSchema: Schema = new Schema<IPost>({
   author: { type: Schema.Types.ObjectId, ref: "User" },
   content: { type: String, required: true },
-  likes: { type: Number, default: 0 },
+  likes: [
+    {
+      author: { type: String },
+    },
+  ],
   comments: [
     {
-      author: { type: Schema.Types.ObjectId, ref: "User" },
+      author: { type: String },
       content: { type: String, required: true },
     },
   ],
