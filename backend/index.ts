@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import compression from "compression";
 import postRoutes from "./src/routes/post";
 import authRoutes from "./src/routes/auth";
+import cors from "cors";
 
 dotenv.config();
 
@@ -13,6 +14,8 @@ const PORT: number = 3000;
 const mongoURLEnv = process.env.mongoURL || "";
 
 const app = express();
+
+app.use(cors())
 
 app.use(express.static("./public/"));
 app.use(
