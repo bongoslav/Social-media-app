@@ -38,7 +38,8 @@ export const postLogin = async (req: Request, res: Response) => {
     res.cookie("myApp_token", token, {
       domain: "localhost",
       maxAge: 4 * 60 * 60 * 1000,
-      httpOnly: true, // to prevent client side JS from accessing the cookie
+      // commented out so that client side is able to access cookies
+      // httpOnly: true, // to prevent client side JS from accessing the cookie
       secure: true, // to require HTTPS connection for cookie transmission
     });
 

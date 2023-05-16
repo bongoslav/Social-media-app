@@ -16,7 +16,12 @@ const mongoURLEnv = process.env.mongoURL || "";
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true, // Allow credentials (cookies, authorization headers, etc.) to be sent
+  })
+);
 
 app.use(express.static("./public/"));
 app.use(
