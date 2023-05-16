@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import compression from "compression";
 import postRoutes from "./src/routes/post";
 import authRoutes from "./src/routes/auth";
+import usersRoutes from "./src/routes/users";
 import cors from "cors";
 
 dotenv.config();
@@ -15,7 +16,7 @@ const mongoURLEnv = process.env.mongoURL || "";
 
 const app = express();
 
-app.use(cors())
+app.use(cors());
 
 app.use(express.static("./public/"));
 app.use(
@@ -42,6 +43,7 @@ mongoose.connection.on("error", (error: Error) => {
   console.log(error);
 });
 
+app.use("/users", usersRoutes);
 app.use("/posts", postRoutes);
 app.use("/auth", authRoutes);
 
