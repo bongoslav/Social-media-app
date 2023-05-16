@@ -1,8 +1,8 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Error from "./components/Error/Error";
 import Home from "./components/Home/Home";
-import Login from "./components/Login/Login";
-import Register from "./components/Register/Register";
+import Login from "./components/Auth/Login";
+import Register from "./components/Auth/Register";
 import Navigation from "./components/NavigationBar/Navigation";
 import Profile from "./components/Profile/Profile";
 

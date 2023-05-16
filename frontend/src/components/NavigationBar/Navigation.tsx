@@ -1,37 +1,66 @@
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-import classes from "./Navigation.module.css";
+import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
+import HomeIcon from "@mui/icons-material/Home";
+import { logoutUser } from "../../services/authServices";
 
-function MainNavigation() {
+const isLoggedIn = () => {
+  const token = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("myApp_token="))
+    ?.split("=")[1];
+
+  // Return true if the authentication token is present, otherwise return false
+  return !!token;
+};
+
+function Navigation() {
+  const isAuthenticated = isLoggedIn();
+
+  const handleLogout = () => {
+    logoutUser();
+  };
+
   return (
-    <header>
-      <nav>
-        <ul>
-          <li>
-            <NavLink
-              to="/"
-              className={({ isActive }) =>
-                isActive ? classes.active : undefined
-              }
-              end
-            >
-              Home
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/profile"
-              className={({ isActive }) =>
-                isActive ? classes.active : undefined
-              }
-            >
-              Profile
-            </NavLink>
-          </li>
-        </ul>
-      </nav>
-    </header>
+    <AppBar position="static">
+      <Toolbar>
+        <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
+          <Typography
+            variant="h6"
+            sx={{ display: { xs: "none", sm: "block" } }}
+          >
+            Social media app
+          </Typography>
+        </Link>
+
+        <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
+          <HomeIcon sx={{ display: { xs: "block", sm: "none" } }} />
+        </Link>
+
+        <Box sx={{ marginLeft: "auto" }}>
+          {isAuthenticated ? (
+            <>
+              <Button color="inherit" component={Link} to="/profile">
+                Profile
+              </Button>
+              <Button color="inherit" onClick={handleLogout}>
+                Logout
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button color="inherit" component={Link} to="/login">
+                Login
+              </Button>
+              <Button color="inherit" component={Link} to="/register">
+                register
+              </Button>
+            </>
+          )}
+        </Box>
+      </Toolbar>
+    </AppBar>
   );
 }
 
-export default MainNavigation;
+export default Navigation;
