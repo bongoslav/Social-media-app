@@ -16,7 +16,7 @@ interface CustomResponse<T> extends Response {
 
 export function paginateResults<T>(model: Model<T>) {
   return async (req: Request, res: CustomResponse<T>, next: NextFunction) => {
-    const limit: number = parseInt(req.query.limit as string) || 1;
+    const limit: number = parseInt(req.query.limit as string) || 10;
     const page: number = parseInt(req.query.page as string) || 1;
     const startIndex: number = (page - 1) * limit;
     const endIndex: number = page * limit;
