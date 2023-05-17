@@ -16,3 +16,13 @@ export async function logoutUser() {
     throw error;
   }
 }
+
+export function isLoggedIn() {
+  const token = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("myApp_token="))
+    ?.split("=")[1];
+
+  // Return true if the authentication token is present, otherwise return false
+  return !!token;
+}

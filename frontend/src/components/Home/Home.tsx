@@ -3,10 +3,12 @@ import Post from "../Post/Post";
 import IPost from "../../interfaces/Post";
 import { createPost, fetchPosts } from "../../services/postServices";
 import { Button, TextField } from "@mui/material";
+import { isLoggedIn } from "../../services/authServices";
 
 export function Home() {
   const [posts, setPosts] = useState<IPost[]>([]);
   const [newPostContent, setNewPostContent] = useState("");
+  const isAuthenticated = isLoggedIn();
 
   useEffect(() => {
     async function fetchData() {
@@ -42,21 +44,23 @@ export function Home() {
 
   return (
     <div>
-      <form onSubmit={handlePostSubmit}>
-        <TextField
-          label="New Post"
-          value={newPostContent}
-          onChange={(event) => setNewPostContent(event.target.value)}
-          fullWidth
-          multiline
-          rows={4}
-          variant="outlined"
-          margin="normal"
-        />
-        <Button type="submit" variant="contained" color="primary">
-          Post
-        </Button>
-      </form>
+      {isAuthenticated && (
+        <form onSubmit={handlePostSubmit}>
+          <TextField
+            label="New Post"
+            value={newPostContent}
+            onChange={(event) => setNewPostContent(event.target.value)}
+            fullWidth
+            multiline
+            rows={4}
+            variant="outlined"
+            margin="normal"
+          />
+          <Button type="submit" variant="contained" color="primary">
+            Post
+          </Button>
+        </form>
+      )}
 
       {posts.map((post) => (
         <Post key={post._id} {...post} />

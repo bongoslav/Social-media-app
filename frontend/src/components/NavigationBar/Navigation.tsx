@@ -2,17 +2,8 @@ import { Link } from "react-router-dom";
 
 import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
-import { logoutUser } from "../../services/authServices";
+import { isLoggedIn, logoutUser } from "../../services/authServices";
 
-const isLoggedIn = () => {
-  const token = document.cookie
-    .split("; ")
-    .find((row) => row.startsWith("myApp_token="))
-    ?.split("=")[1];
-
-  // Return true if the authentication token is present, otherwise return false
-  return !!token;
-};
 
 function Navigation() {
   const isAuthenticated = isLoggedIn();
