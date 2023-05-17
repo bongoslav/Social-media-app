@@ -15,7 +15,11 @@ function Post({ _id, author, content, comments, likes }: PostProps) {
   }, [author]);
 
   return (
-    <div id={_id}>
+    <div
+      id={_id}
+      style={{ border: "1px solid black", padding: "1rem" }}
+      key={_id}
+    >
       <h3>Post author (username): {postAuthor?.username}</h3>
       <h3>Post content: {content}</h3>
       <h3>Comments:</h3>
