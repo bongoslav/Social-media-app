@@ -42,6 +42,10 @@ export function Home() {
     }
   };
 
+  // TODO:
+  // add like
+  // delete a post button if i am the author
+
   return (
     <div>
       {isAuthenticated && (
