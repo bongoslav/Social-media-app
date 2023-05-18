@@ -8,7 +8,7 @@ const postRoutes: Router = Router();
 
 postRoutes.get("/", paginateResults(Post), getPosts);
 postRoutes.post("/create", isAuthenticated, addPost);
-postRoutes.put("/add-comment/:id", isAuthenticated, addComment);
+postRoutes.post("/:id/add-comment", isAuthenticated, addComment);
 postRoutes.put("/:id/like", isAuthenticated, addLike);
 
 export default postRoutes;

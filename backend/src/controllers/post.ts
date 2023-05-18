@@ -41,7 +41,7 @@ export const addComment = async (req: Request, res: Response) => {
 
     const content: string = req.body.content;
     if (!content) {
-      return res.status(400).json({ message: "Content is required" });
+      return res.status(400).json({ message: "Comment content is required" });
     }
 
     const comment: Comment = {
@@ -52,7 +52,7 @@ export const addComment = async (req: Request, res: Response) => {
     post.comments.push(comment);
     await post.save();
 
-    return res.status(201).json({ message: "Comment added successfully" });
+    res.status(201).json(comment);
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Server Error" });
