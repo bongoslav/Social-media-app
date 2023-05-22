@@ -6,6 +6,7 @@ export async function logoutUser() {
       credentials: "include",
     });
     const data = await response.json();
+    localStorage.clear()
 
     if (!response.ok) {
       throw new Error(data.message || "Failed to logout");

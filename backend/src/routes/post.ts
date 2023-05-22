@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { addComment, addLike, addPost, getPosts } from "../controllers/post";
+import { addComment, addLike, addPost, deletePost, getPosts } from "../controllers/post";
 import { isAuthenticated } from "../middleware/authenticateMiddleware";
 import { paginateResults } from "../middleware/paginationMiddleware";
 import Post from "../models/Post";
@@ -8,6 +8,7 @@ const postRoutes: Router = Router();
 
 postRoutes.get("/", paginateResults(Post), getPosts);
 postRoutes.post("/create", isAuthenticated, addPost);
+postRoutes.delete("/:id", isAuthenticated, deletePost);
 postRoutes.post("/:id/add-comment", isAuthenticated, addComment);
 postRoutes.put("/:id/like", isAuthenticated, addLike);
 

@@ -3,7 +3,7 @@ import Error from "./components/Error/Error";
 import Home from "./components/Home/Home";
 import Login from "./components/Auth/Login";
 import Register from "./components/Auth/Register";
-import Navigation from "./components/NavigationBar/Navigation";
+import Navigation from "./components/Navigation/Navigation";
 import Profile from "./components/Profile/Profile";
 
 function App() {

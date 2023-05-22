@@ -4,6 +4,8 @@ import IPost from "../../interfaces/Post";
 import { createPost, fetchPosts } from "../../services/postServices";
 import { Button, TextField } from "@mui/material";
 import { isLoggedIn } from "../../services/authServices";
+import React from "react";
+import { Await } from "react-router-dom";
 
 export function Home() {
   const [posts, setPosts] = useState<IPost[]>([]);
@@ -49,6 +51,7 @@ export function Home() {
   return (
     <div>
       {isAuthenticated && (
+        // don't crash the app when validation fails. use same as comment validation
         <form onSubmit={handlePostSubmit}>
           <TextField
             label="New Post"
@@ -66,9 +69,13 @@ export function Home() {
         </form>
       )}
 
-      {posts.map((post) => (
-        <Post key={post._id} {...post} />
-      ))}
+      <React.Suspense fallback={<p>Loading...</p>}>
+        <Await resolve={posts} errorElement={<p>Error loading posts</p>}>
+          {posts.map((post) => (
+            <Post key={post._id} {...post} />
+          ))}
+        </Await>
+      </React.Suspense>
     </div>
   );
 }

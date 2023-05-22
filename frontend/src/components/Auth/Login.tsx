@@ -1,5 +1,5 @@
-import React, { useState } from "react";
 import { Button, TextField } from "@mui/material";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function LoginPage() {
@@ -25,6 +25,8 @@ function LoginPage() {
       });
 
       if (response.ok) {
+        const user = await response.json();
+        localStorage.setItem("user", JSON.stringify(user._id));
         navigate("/"); // Redirect to the home page
         window.location.reload(); // Refresh the page
       } else {

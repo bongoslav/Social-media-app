@@ -5,7 +5,7 @@ import IUser from "../../interfaces/User";
 import { fetchUser } from "../../services/userServices";
 import Comment from "../Comment/Comment";
 import { Alert, Button } from "@mui/material";
-import { addComment } from "../../services/postServices";
+import { addComment, deletePost } from "../../services/postServices";
 
 type PostProps = IPost;
 
@@ -15,6 +15,9 @@ function Post({ _id, author, content, comments, likes }: PostProps) {
   const [existingComments, setExistingComments] =
     useState<IComment[]>(comments);
   const [errorMessage, setErrorMessage] = useState("");
+  const [deleted, setDeleted] = useState(false);
+  // only in Post component for now
+  const currentUser = localStorage.getItem("user");
 
   useEffect(() => {
     fetchUser(author).then((user) => setPostAuthor(user));
@@ -38,8 +41,28 @@ function Post({ _id, author, content, comments, likes }: PostProps) {
     }
   };
 
+  const handleDeletePost = async () => {
+    try {
+      await deletePost(_id);
+      setDeleted(true);
+    } catch (error: any) {
+      const message = error.message || "Failed to delete post";
+      setErrorMessage(message);
+    }
+  };
+
+  if (deleted) {
+    return null; // Return null to remove the component from the DOM
+  }
+
   return (
-    <div style={{ border: "1px solid black", padding: "1rem" }} key={_id}>
+    <div
+      style={{
+        border: "1px solid black",
+        padding: "1rem",
+      }}
+      key={_id}
+    >
       <h3>Post author (username): {postAuthor?.username}</h3>
       <h3>Post content: {content}</h3>
       <Button onClick={toggleComments}>
@@ -62,6 +85,10 @@ function Post({ _id, author, content, comments, likes }: PostProps) {
         </>
       )}
       <h3>Likes: {likes.length}</h3>
+
+      {currentUser === `"${author}"` && (
+        <Button onClick={handleDeletePost}>Delete post</Button>
+      )}
       {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
     </div>
   );

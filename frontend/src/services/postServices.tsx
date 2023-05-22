@@ -49,3 +49,21 @@ export async function addComment(postId: string, content: string) {
 
   return data;
 }
+
+export async function deletePost(postId: string) {
+  const response = await fetch(`http://localhost:3000/posts/${postId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include", // Include cookies in the request
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to delete post");
+  }
+
+  return data;
+}
