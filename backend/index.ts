@@ -1,6 +1,5 @@
 import express from "express";
 import mongoose from "mongoose";
-import session from "express-session";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import compression from "compression";
@@ -19,10 +18,11 @@ const app = express();
 app.use(
   cors({
     origin: "http://localhost:5173",
-    credentials: true, // Allow credentials (cookies, authorization headers, etc.) to be sent
+    credentials: true, // Enable sending credentials
   })
 );
 
+app.use(cookieParser());
 app.use(express.static("./public/"));
 app.use(
   compression({
@@ -31,15 +31,6 @@ app.use(
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(
-  session({
-    secret: "secretKey",
-    resave: false,
-    saveUninitialized: false,
-    cookie: { secure: false },
-  })
-);
-app.use(cookieParser());
 
 const mongoURL = mongoURLEnv;
 

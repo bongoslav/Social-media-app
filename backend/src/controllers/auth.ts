@@ -1,14 +1,14 @@
 import { Request, Response } from "express";
 import { validationResult } from "express-validator";
 import bcrypt from "bcrypt";
-import User, { getUserByEmail } from "../models/User";
+import { IUser, UserModel } from "../models/User";
 import jwt, { Secret } from "jsonwebtoken";
-import { get } from "lodash";
 import dotenv from "dotenv";
 dotenv.config();
 
+const JWT_SECRET: Secret = process.env.JWT_SECRET || "";
+
 export const postLogin = async (req: Request, res: Response) => {
-  const JWT_SECRET: Secret = process.env.JWT_SECRET || "";
   const { email, password } = req.body;
 
   try {
@@ -17,7 +17,7 @@ export const postLogin = async (req: Request, res: Response) => {
       return res.status(422).send(errors.array());
     }
 
-    const user = await getUserByEmail(email);
+    const user: IUser | null = await UserModel.findOne({ email });
     if (!user) {
       return res.status(400).json({ error: "No such user exists" });
     }
@@ -28,22 +28,15 @@ export const postLogin = async (req: Request, res: Response) => {
       return res.status(401).json({ error: "Incorrect password" });
     }
 
-    const token = jwt.sign({ userId: user._id }, JWT_SECRET, {
-      expiresIn: "4h",
-    });
+    // cookie
+    const token = jwt.sign({ userId: user._id }, JWT_SECRET, {});
 
-    user.tokens.push(token);
-    await user.save();
-
-    res.cookie("myApp_token", token, {
-      domain: "localhost",
-      maxAge: 4 * 60 * 60 * 1000,
-      // commented out so that client side is able to access cookies
-      // httpOnly: true, // to prevent client side JS from accessing the cookie
-      secure: true, // to require HTTPS connection for cookie transmission
-    });
-
-    return res.status(200).json(user);
+    return res
+      .cookie("accessToken", token, {
+        httpOnly: true,
+      })
+      .status(200)
+      .json({ id: user._id, email: user.email, username: user.username });
   } catch (err: any) {
     console.error(err.message);
     res.status(500).send("Server error");
@@ -52,18 +45,13 @@ export const postLogin = async (req: Request, res: Response) => {
 
 export const postLogout = async (req: Request, res: Response) => {
   try {
-    const currentUserId = get(req, "user._id");
-    const currentUser = await User.findById(currentUserId);
-
-    // remove the token from the user's tokens array
-    // session === cookie[myApp_token]
-    currentUser.tokens = currentUser.tokens.filter(
-      (token: string) => token !== req.cookies["myApp_token"]
-    );
-    await currentUser.save();
-
-    res.clearCookie("myApp_token");
-    return res.status(200).json({ msg: "Logged out successfully" });
+    return res
+      .clearCookie("accessToken", {
+        secure: false,
+        sameSite: "none",
+      })
+      .status(200)
+      .json("User logged out");
   } catch (err: any) {
     console.error(err.message);
     res.status(500).send("Server error");
@@ -80,7 +68,7 @@ export const postRegister = async (req: Request, res: Response) => {
     }
 
     // Check if user already exists
-    let user = await User.findOne({ $or: [{ email }, { username }] });
+    let user = await UserModel.findOne({ $or: [{ email }, { username }] });
     if (user) {
       return res.status(400).json({ error: "User already exists" });
     }
@@ -90,7 +78,7 @@ export const postRegister = async (req: Request, res: Response) => {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     // Create new user
-    user = new User({
+    user = new UserModel({
       email,
       username,
       password: hashedPassword,

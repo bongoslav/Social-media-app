@@ -13,13 +13,12 @@ const UserSchema: Schema = new Schema<IUser>({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true, unique: true },
   username: { type: String, required: true, unique: true },
-  tokens: { type: [String], required: true },
+  tokens: { type: [String], },
   posts: [{ type: Schema.Types.ObjectId, ref: "Post" }],
 });
 
 export const UserModel = mongoose.model("User", UserSchema);
 
-export const getUserByEmail = (email: string) => UserModel.findOne({ email });
 export const getUserById = (id: string) => UserModel.findById(id);
 export const deleteUserById = (id: string) =>
   UserModel.findOneAndDelete({ _id: id });
