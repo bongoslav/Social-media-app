@@ -1,67 +1,51 @@
-import { Button, TextField } from "@mui/material";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [validationError, setValidationError] = useState<string[]>([]);
+  const [inputs, setInputs] = useState({
+    email: "",
+    password: "",
+  });
+  const [err, setErr] = useState(null);
+  const navigate = useNavigate();
 
-  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(event.target.value);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(event.target.value);
-  };
-
-  const handleLogin = async () => {
+  const handleLogin = async (e: React.MouseEvent) => {
+    e.preventDefault();
     try {
-      const response = await fetch("http://localhost:3000/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-        credentials: "include",
+      const res = await axios.post("http://localhost:3000/auth/login", inputs, {
+        withCredentials: true,
       });
-
-      if (response.ok) {
-        const user = await response.json();
-        localStorage.setItem("user", JSON.stringify(user._id));
-        navigate("/"); // Redirect to the home page
-        window.location.reload(); // Refresh the page
-      } else {
-        const errorData = await response.json();
-        setValidationError(errorData[0].msg);
-      }
-    } catch (error) {
-      console.error("Error occurred during login:", error);
+      localStorage.setItem('user', JSON.stringify(res.data.id));
+      navigate("/");
+    } catch (err: any) {
+      setErr(err.response);
     }
   };
-  const navigate = useNavigate();
 
   return (
     <div>
       <h1>Login</h1>
-      <div>
-        {validationError && <h3>{validationError}</h3>}
-        <h3></h3>
-      </div>
-      <TextField
-        label="Email"
-        variant="outlined"
-        value={email}
-        onChange={handleEmailChange}
-      />
-      <TextField
-        label="Password"
-        variant="outlined"
-        type="password"
-        value={password}
-        onChange={handlePasswordChange}
-      />
-      <Button variant="contained" onClick={handleLogin}>
-        Login
-      </Button>
+      <form>
+        <input
+          type="text"
+          placeholder="Email"
+          name="email"
+          onChange={handleChange}
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          name="password"
+          onChange={handleChange}
+        />
+        {err && err}
+        <button onClick={handleLogin}>Login</button>
+      </form>
     </div>
   );
 }

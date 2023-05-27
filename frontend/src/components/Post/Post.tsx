@@ -4,7 +4,6 @@ import IPost from "../../interfaces/Post";
 import IUser from "../../interfaces/User";
 import { fetchUser } from "../../services/userServices";
 import Comment from "../Comment/Comment";
-import { Alert, Button } from "@mui/material";
 import { addComment, deletePost } from "../../services/postServices";
 
 type PostProps = IPost;
@@ -65,9 +64,9 @@ function Post({ _id, author, content, comments, likes }: PostProps) {
     >
       <h3>Post author (username): {postAuthor?.username}</h3>
       <h3>Post content: {content}</h3>
-      <Button onClick={toggleComments}>
+      <button onClick={toggleComments}>
         {showComments ? "Hide Comments" : "Show Comments"}
-      </Button>
+      </button>
       {showComments && (
         <>
           <input
@@ -87,9 +86,9 @@ function Post({ _id, author, content, comments, likes }: PostProps) {
       <h3>Likes: {likes.length}</h3>
 
       {currentUser === `"${author}"` && (
-        <Button onClick={handleDeletePost}>Delete post</Button>
+        <button onClick={handleDeletePost}>Delete post</button>
       )}
-      {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
+      {errorMessage && <div className="alert error">{errorMessage}</div>}
     </div>
   );
 }

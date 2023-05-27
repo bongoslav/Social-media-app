@@ -1,56 +1,42 @@
 import { Link } from "react-router-dom";
-
-import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
-import HomeIcon from "@mui/icons-material/Home";
-import { isLoggedIn, logoutUser } from "../../services/authServices";
-
+import { logoutUser } from "../../services/authServices";
+// import "./Navigation.css";
 
 function Navigation() {
-  const isAuthenticated = isLoggedIn();
-
+  const isAuthenticated = localStorage.getItem("user");
   const handleLogout = () => {
     logoutUser();
   };
 
   return (
-    <AppBar position="static">
-      <Toolbar>
-        <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
-          <Typography
-            variant="h6"
-            sx={{ display: { xs: "none", sm: "block" } }}
-          >
-            Social media app
-          </Typography>
-        </Link>
-
-        <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
-          <HomeIcon sx={{ display: { xs: "block", sm: "none" } }} />
-        </Link>
-
-        <Box sx={{ marginLeft: "auto" }}>
+    <header className="navbar">
+      <Link to="/" className="navbar-logo">
+        Social media app
+      </Link>
+      <nav>
+        <div className="navbar-item">
           {isAuthenticated ? (
             <>
-              <Button color="inherit" component={Link} to="/profile">
+              <Link to="/profile" className="navbar-item">
                 Profile
-              </Button>
-              <Button color="inherit" onClick={handleLogout}>
+              </Link>
+              <button className="navbar-item" onClick={handleLogout}>
                 Logout
-              </Button>
+              </button>
             </>
           ) : (
             <>
-              <Button color="inherit" component={Link} to="/login">
+              <Link to="/login" className="navbar-item">
                 Login
-              </Button>
-              <Button color="inherit" component={Link} to="/register">
-                register
-              </Button>
+              </Link>
+              <Link to="/register" className="navbar-item">
+                Register
+              </Link>
             </>
           )}
-        </Box>
-      </Toolbar>
-    </AppBar>
+        </div>
+      </nav>
+    </header>
   );
 }
 

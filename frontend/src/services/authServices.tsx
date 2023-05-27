@@ -1,29 +1,24 @@
+import axios from "axios";
+
 export async function logoutUser() {
   try {
-    const response = await fetch("http://localhost:3000/auth/logout", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-    });
-    const data = await response.json();
-    localStorage.clear()
+    const response = await axios.post(
+      "http://localhost:3000/auth/logout",
+      {},
+      {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      }
+    );
 
-    if (!response.ok) {
-      throw new Error(data.message || "Failed to logout");
+    if (response.status !== 200) {
+      throw new Error(response.data.message || "Failed to logout");
     }
+
+    localStorage.removeItem("user");
     window.location.reload();
   } catch (error) {
     console.error("Error logging out:", error);
     throw error;
   }
-}
-
-export function isLoggedIn() {
-  const token = document.cookie
-    .split("; ")
-    .find((row) => row.startsWith("myApp_token="))
-    ?.split("=")[1];
-
-  // Return true if the authentication token is present, otherwise return false
-  return !!token;
 }

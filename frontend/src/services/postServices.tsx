@@ -1,31 +1,22 @@
+import axios from "axios";
+
 export async function fetchPosts() {
-  const response = await fetch("http://localhost:3000/posts");
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(data.message || "Failed to fetch posts");
-  }
-
-  return data.results;
+  const response = await axios.get("http://localhost:3000/posts", {
+    withCredentials: true
+  });
+  return response.data.results;
 }
 
 export async function createPost(newPostContent: string) {
-  const response = await fetch("http://localhost:3000/posts/create", {
-    method: "POST",
+  const response = await axios.post("http://localhost:3000/posts/create", {
+    content: newPostContent,
     headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ content: newPostContent }),
-    credentials: "include", // Include cookies in the request
+      authorization: "Bearer " + localStorage.getItem("token")
+    }
   });
+  console.log(response);
 
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(data.message || "Failed to create post");
-  }
-
-  return data;
+  return response.data;
 }
 
 export async function addComment(postId: string, content: string) {
