@@ -8,7 +8,7 @@ dotenv.config();
 
 const JWT_SECRET: Secret = process.env.JWT_SECRET || "";
 
-export const postLogin = async (req: Request, res: Response) => {
+export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   try {
@@ -43,7 +43,7 @@ export const postLogin = async (req: Request, res: Response) => {
   }
 };
 
-export const postLogout = async (req: Request, res: Response) => {
+export const logout = async (req: Request, res: Response) => {
   try {
     return res
       .clearCookie("accessToken", {
@@ -58,7 +58,7 @@ export const postLogout = async (req: Request, res: Response) => {
   }
 };
 
-export const postRegister = async (req: Request, res: Response) => {
+export const register = async (req: Request, res: Response) => {
   const { email, username, password } = req.body;
 
   try {
