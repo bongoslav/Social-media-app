@@ -20,8 +20,9 @@ function LoginPage() {
       const res = await axios.post("http://localhost:3000/auth/login", inputs, {
         withCredentials: true,
       });
-      localStorage.setItem('user', JSON.stringify(res.data.id));
+      localStorage.setItem("user", JSON.stringify(res.data.id));
       navigate("/");
+      window.location.reload();
     } catch (err: any) {
       setErr(err.response);
     }

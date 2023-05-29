@@ -1,5 +1,7 @@
+@import url("https://fonts.googleapis.com/css2?family=Happy+Monkey&family=Inter&display=swap");
 body {
-  /* background-color: #111; */
-  /* color: #fff; */
+  font-family: "Happy Monkey", cursive;
+  font-family: "Inter", sans-serif;
+  color: #000;
   margin: 0;
 }

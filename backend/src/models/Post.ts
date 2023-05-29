@@ -9,6 +9,7 @@ export interface IPost extends Document {
 }
 
 export interface Comment {
+  _id: string
   author: IUser["_id"];
   content: string;
 }

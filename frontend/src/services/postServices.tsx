@@ -2,43 +2,44 @@ import axios from "axios";
 
 export async function fetchPosts() {
   const response = await axios.get("http://localhost:3000/posts", {
-    withCredentials: true
+    withCredentials: true,
   });
   return response.data.results;
 }
 
 export async function createPost(newPostContent: string) {
-  const response = await axios.post("http://localhost:3000/posts/create", {
-    content: newPostContent,
-    headers: {
-      authorization: "Bearer " + localStorage.getItem("token")
+  const response = await axios.post(
+    "http://localhost:3000/posts/create",
+    {
+      content: newPostContent,
+      userId: localStorage.getItem("user")?.replace(/"/g, ""),
+    },
+    {
+      withCredentials: true, // include the cookie
     }
-  });
-  console.log(response);
+  );
 
   return response.data;
 }
 
 export async function addComment(postId: string, content: string) {
-  const response = await fetch(
+  const response = await axios.post(
     `http://localhost:3000/posts/${postId}/add-comment`,
     {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ content: content }),
-      credentials: "include", // Include cookies in the request
+      content:content,
+      userId: localStorage.getItem("user")?.replace(/"/g, ""),
+    },
+    {
+      withCredentials: true,
     }
   );
 
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(data.message || "Failed to add comment");
+  if (response.status !== 201) {
+    throw new Error(response.data || "Failed to add comment");
   }
 
-  return data;
+
+  return response.data;
 }
 
 export async function deletePost(postId: string) {

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { logoutUser } from "../../services/authServices";
-// import "./Navigation.css";
+import "./Navigation.css";
 
 function Navigation() {
   const isAuthenticated = localStorage.getItem("user");

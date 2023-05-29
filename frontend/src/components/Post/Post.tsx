@@ -15,7 +15,6 @@ function Post({ _id, author, content, comments, likes }: PostProps) {
     useState<IComment[]>(comments);
   const [errorMessage, setErrorMessage] = useState("");
   const [deleted, setDeleted] = useState(false);
-  // only in Post component for now
   const currentUser = localStorage.getItem("user");
 
   useEffect(() => {
@@ -30,12 +29,12 @@ function Post({ _id, author, content, comments, likes }: PostProps) {
 
   const handleAddComment = async () => {
     try {
-      const response = await addComment(_id, newComment);
+      const response: IComment = await addComment(_id, newComment);
 
-      setNewComment("");
       setExistingComments((prevComments) => [...prevComments, response]);
+      setNewComment("");
     } catch (error: any) {
-      const message = error.message || "Failed to add comment";
+      const message = "Failed to add comment";
       setErrorMessage(message);
     }
   };
@@ -45,7 +44,7 @@ function Post({ _id, author, content, comments, likes }: PostProps) {
       await deletePost(_id);
       setDeleted(true);
     } catch (error: any) {
-      const message = error.message || "Failed to delete post";
+      const message = "Failed to delete post";
       setErrorMessage(message);
     }
   };

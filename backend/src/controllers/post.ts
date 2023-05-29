@@ -1,8 +1,10 @@
 import { Request, Response } from "express";
+import { v4 as uuidv4 } from 'uuid';
 import Post from "../models/Post";
 import { Comment } from "../models/Post";
 import User, { IUser } from "../models/User";
 import { get } from "lodash";
+import mongoose from "mongoose";
 
 export const getPosts = async (req: Request, res: Response) => {
   res.status(200).json(res.locals.paginatedResult);
@@ -10,16 +12,15 @@ export const getPosts = async (req: Request, res: Response) => {
 
 export const addPost = async (req: Request, res: Response) => {
   const content: string = req.body.content;
-  let user: { _id: string }; // an object with the user's id
-  user = get(req, "user._id");
+  const userId = req.body.userId;
 
   const post = new Post({
-    author: user,
+    author: userId,
     content: content,
   });
 
   await User.findByIdAndUpdate(
-    user,
+    userId,
     { $push: { posts: post._id } },
     { new: true }
   );
@@ -53,7 +54,7 @@ export const deletePost = async (req: Request, res: Response) => {
 
 export const addComment = async (req: Request, res: Response) => {
   const postId: string = req.params.id;
-  const userId: string = get(req, "user._id");
+  const userId: string = req.body.userId;
 
   try {
     const post = await Post.findById(postId);
@@ -67,6 +68,7 @@ export const addComment = async (req: Request, res: Response) => {
     }
 
     const comment: Comment = {
+      _id: new mongoose.Types.ObjectId().toString(),
       author: userId,
       content: content,
     };
