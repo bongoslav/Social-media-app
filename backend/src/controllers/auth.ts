@@ -64,7 +64,7 @@ export const register = async (req: Request, res: Response) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(422).send(errors.array());
+      return res.status(422).json(errors.array());
     }
 
     // Check if user already exists

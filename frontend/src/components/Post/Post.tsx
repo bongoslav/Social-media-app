@@ -4,7 +4,7 @@ import IPost from "../../interfaces/Post";
 import IUser from "../../interfaces/User";
 import { fetchUser } from "../../services/userServices";
 import Comment from "../Comment/Comment";
-import { addComment, deletePost } from "../../services/postServices";
+import { addComment, deletePost, likePost } from "../../services/postServices";
 
 type PostProps = IPost;
 
@@ -15,6 +15,7 @@ function Post({ _id, author, content, comments, likes }: PostProps) {
     useState<IComment[]>(comments);
   const [errorMessage, setErrorMessage] = useState("");
   const [deleted, setDeleted] = useState(false);
+  const [currLikes, setCurrLikes] = useState(likes.length);
   const currentUser = sessionStorage.getItem("user");
 
   useEffect(() => {
@@ -53,6 +54,16 @@ function Post({ _id, author, content, comments, likes }: PostProps) {
     return null; // Return null to remove the component from the DOM
   }
 
+  const handleLikePost = async () => {
+    try {
+      await likePost(_id);
+      setCurrLikes((prevLikes) => prevLikes + 1);
+    } catch (error: any) {
+      const message = "Failed to like post";
+      setErrorMessage(message);
+    }
+  };
+
   return (
     <div
       style={{
@@ -68,13 +79,17 @@ function Post({ _id, author, content, comments, likes }: PostProps) {
       </button>
       {showComments && (
         <>
-          <input
-            type="text"
-            value={newComment}
-            onChange={(e) => setNewComment(e.target.value)}
-            placeholder="Add a comment..."
-          />
-          <button onClick={handleAddComment}>Add Comment</button>
+          {currentUser && (
+            <>
+              <input
+                type="text"
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+                placeholder="Add a comment..."
+              />
+              <button onClick={handleAddComment}>Add Comment</button>
+            </>
+          )}
           <div>
             {existingComments.map((comment: IComment) => (
               <Comment {...comment} key={comment._id} />
@@ -82,7 +97,8 @@ function Post({ _id, author, content, comments, likes }: PostProps) {
           </div>
         </>
       )}
-      <h3>Likes: {likes.length}</h3>
+      <h3>Likes: {currLikes}</h3>
+      {currentUser && <button onClick={handleLikePost}>Like post</button>}
 
       {currentUser === `"${author}"` && (
         <button onClick={handleDeletePost}>Delete post</button>

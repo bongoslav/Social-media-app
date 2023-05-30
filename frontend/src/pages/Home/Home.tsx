@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Post from "../Post/Post";
+import Post from "../../components/Post/Post";
 import IPost from "../../interfaces/Post";
 import { createPost, fetchPosts } from "../../services/postServices";
 import React from "react";
@@ -9,6 +9,7 @@ import { AxiosError } from "axios";
 export function Home() {
   const [posts, setPosts] = useState<IPost[]>([]);
   const [newPostContent, setNewPostContent] = useState("");
+  const isLoggedIn = sessionStorage.getItem("user");
 
   useEffect(() => {
     async function fetchData() {
@@ -40,13 +41,9 @@ export function Home() {
     }
   };
 
-  // TODO:
-  // add like
-  // delete a post button if i am the author
-
   return (
     <div>
-      {1 && (
+      {isLoggedIn && (
         // don't crash the app when validation fails. use same as comment validation
         <div>
           <form onSubmit={handlePostSubmit}>

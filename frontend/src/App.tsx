@@ -1,10 +1,10 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Error from "./components/Error/Error";
-import Home from "./components/Home/Home";
-import Login from "./components/Auth/Login";
-import Register from "./components/Auth/Register";
+import Error from "./pages/Error/Error";
+import Home from "./pages/Home/Home";
+import Login from "./pages/Auth/Login";
+import Register from "./pages/Auth/Register";
 import Navigation from "./components/Navigation/Navigation";
-import Profile from "./components/Profile/Profile";
+import Profile from "./pages/Profile/Profile";
 
 function App() {
   return (

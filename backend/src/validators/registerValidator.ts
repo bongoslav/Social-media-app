@@ -22,8 +22,8 @@ export const registerValidator = [
     .custom((value, { req }) => {
       if (value !== req.body.password) {
         throw new Error("Passwords do not match");
+      } else {
+        return value;
       }
-
-      return true;
     }),
 ];

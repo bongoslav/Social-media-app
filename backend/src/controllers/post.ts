@@ -84,7 +84,7 @@ export const addComment = async (req: Request, res: Response) => {
 
 export const addLike = async (req: Request, res: Response) => {
   const postId: string = req.params.id;
-  const userId: string = get(req, "user._id");
+  const userId: string = req.body.userId;
 
   try {
     const post = await Post.findById(postId);

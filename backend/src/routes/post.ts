@@ -10,6 +10,6 @@ postRoutes.get("/", paginateResults(Post), getPosts);
 postRoutes.post("/create", isAuthenticated, addPost);
 postRoutes.post("/:id", isAuthenticated, deletePost);
 postRoutes.post("/:id/add-comment", isAuthenticated, addComment);
-postRoutes.put("/:id/like", isAuthenticated, addLike);
+postRoutes.post("/:id/like", isAuthenticated, addLike);
 
 export default postRoutes;

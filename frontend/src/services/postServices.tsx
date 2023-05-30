@@ -58,3 +58,21 @@ export async function deletePost(postId: string) {
 
   return response.data;
 }
+
+export async function likePost(postId: string) {
+  const response = await axios.post(
+    `http://localhost:3000/posts/${postId}/like`,
+    {
+      userId: sessionStorage.getItem("user")?.replace(/"/g, ""),
+    },
+    {
+      withCredentials: true,
+    }
+  );
+
+  if (response.status !== 201) {
+    throw new Error(response.data || "Failed to like post");
+  }
+
+  return response.data;
+}
