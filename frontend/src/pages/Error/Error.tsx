@@ -4,7 +4,6 @@ import Navigation from "../../components/Navigation/Navigation";
 function ErrorPage() {
   const error: any = useRouteError();
 
-  let title = "An error occurred!";
   let message = "Something went wrong!";
 
   if (error.status === 500) {
@@ -12,7 +11,6 @@ function ErrorPage() {
   }
 
   if (error.status === 404) {
-    title = "Not found!";
     message = "Could not find resource or page.";
   }
 
