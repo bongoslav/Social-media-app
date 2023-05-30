@@ -15,7 +15,7 @@ export async function logoutUser() {
       throw new Error(response.data.message || "Failed to logout");
     }
 
-    localStorage.removeItem("user");
+    sessionStorage.removeItem("user");
     window.location.reload();
   } catch (error) {
     console.error("Error logging out:", error);

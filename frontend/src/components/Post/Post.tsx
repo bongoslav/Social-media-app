@@ -15,7 +15,7 @@ function Post({ _id, author, content, comments, likes }: PostProps) {
     useState<IComment[]>(comments);
   const [errorMessage, setErrorMessage] = useState("");
   const [deleted, setDeleted] = useState(false);
-  const currentUser = localStorage.getItem("user");
+  const currentUser = sessionStorage.getItem("user");
 
   useEffect(() => {
     fetchUser(author).then((user) => setPostAuthor(user));

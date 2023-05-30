@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { v4 as uuidv4 } from 'uuid';
 import Post from "../models/Post";
 import { Comment } from "../models/Post";
 import User, { IUser } from "../models/User";
@@ -32,13 +31,13 @@ export const addPost = async (req: Request, res: Response) => {
 
 export const deletePost = async (req: Request, res: Response) => {
   const postId: string = req.params.id;
-  const user: IUser = get(req, "user._id");
+  const user: string = req.body.user
 
   try {
     const post = await Post.findById(postId);
     const postAuthor = post.author;
 
-    if (postAuthor.toString() !== user.toString()) {
+    if (postAuthor.toString() !== user) {
       return res.status(401).json({ message: "Unauthorized" });
     }
 

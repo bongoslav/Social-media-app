@@ -12,7 +12,7 @@ export async function createPost(newPostContent: string) {
     "http://localhost:3000/posts/create",
     {
       content: newPostContent,
-      userId: localStorage.getItem("user")?.replace(/"/g, ""),
+      userId: sessionStorage.getItem("user")?.replace(/"/g, ""),
     },
     {
       withCredentials: true, // include the cookie
@@ -26,8 +26,8 @@ export async function addComment(postId: string, content: string) {
   const response = await axios.post(
     `http://localhost:3000/posts/${postId}/add-comment`,
     {
-      content:content,
-      userId: localStorage.getItem("user")?.replace(/"/g, ""),
+      content: content,
+      userId: sessionStorage.getItem("user")?.replace(/"/g, ""),
     },
     {
       withCredentials: true,
@@ -38,24 +38,23 @@ export async function addComment(postId: string, content: string) {
     throw new Error(response.data || "Failed to add comment");
   }
 
-
   return response.data;
 }
 
 export async function deletePost(postId: string) {
-  const response = await fetch(`http://localhost:3000/posts/${postId}`, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
+  const response = await axios.post(
+    `http://localhost:3000/posts/${postId}`,
+    {
+      user: sessionStorage.getItem("user")?.replace(/"/g, ""),
     },
-    credentials: "include", // Include cookies in the request
-  });
+    {
+      withCredentials: true,
+    }
+  );
 
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(data.message || "Failed to delete post");
+  if (response.status !== 200) {
+    throw new Error(response.data || "Failed to delete post");
   }
 
-  return data;
+  return response.data;
 }

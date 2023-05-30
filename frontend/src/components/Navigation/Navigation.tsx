@@ -3,7 +3,7 @@ import { logoutUser } from "../../services/authServices";
 import "./Navigation.css";
 
 function Navigation() {
-  const isAuthenticated = localStorage.getItem("user");
+  const isAuthenticated = sessionStorage.getItem("user");
   const handleLogout = () => {
     logoutUser();
   };
