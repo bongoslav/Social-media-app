@@ -1,0 +1,19 @@
+.wrapper {
+  display: grid;
+  width: 50%;
+  max-width: 100%;
+  border: "1px solid black";
+  margin: 0 auto;
+}
+
+@media screen and (max-width: 768px) {
+  .wrapper {
+    width: 80%; /* Make the wrapper wider on smaller screens */
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .wrapper {
+    width: 40%; /* Make the wrapper 40% wide on full screens */
+  }
+}

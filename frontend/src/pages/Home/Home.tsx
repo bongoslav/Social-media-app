@@ -5,6 +5,7 @@ import { createPost, fetchPosts } from "../../services/postServices";
 import React from "react";
 import { Await } from "react-router-dom";
 import { AxiosError } from "axios";
+import "./Home.css";
 
 export function Home() {
   const [posts, setPosts] = useState<IPost[]>([]);
@@ -42,7 +43,7 @@ export function Home() {
   };
 
   return (
-    <div>
+    <div className="wrapper">
       {isLoggedIn && (
         // don't crash the app when validation fails. use same as comment validation
         <div>

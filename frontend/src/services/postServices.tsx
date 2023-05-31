@@ -76,3 +76,15 @@ export async function likePost(postId: string) {
 
   return response.data;
 }
+
+export async function unlikePost(postId: string) {
+  const response = await axios.post(
+    `http://localhost:3000/posts/${postId}/unlike`,
+    {
+      userId: sessionStorage.getItem("user")?.replace(/"/g, ""),
+    },
+    { withCredentials: true }
+  );
+
+  return response.data
+}

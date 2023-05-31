@@ -17,7 +17,10 @@ function LoginPage() {
   const handleLogin = async (e: React.MouseEvent) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:3000/auth/login", inputs);
+      const res = await axios.post("http://localhost:3000/auth/login", inputs, {
+        withCredentials: true,
+      });
+
       sessionStorage.setItem("user", JSON.stringify(res.data.id));
       navigate("/");
       window.location.reload();

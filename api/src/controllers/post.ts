@@ -31,7 +31,7 @@ export const addPost = async (req: Request, res: Response) => {
 
 export const deletePost = async (req: Request, res: Response) => {
   const postId: string = req.params.id;
-  const user: string = req.body.user
+  const user: string = req.body.user;
 
   try {
     const post = await Post.findById(postId);
@@ -92,10 +92,39 @@ export const addLike = async (req: Request, res: Response) => {
       return res.status(404).json({ message: "Post not found" });
     }
 
+    if (post.likes.includes(userId)) {
+      return res.status(400).json({ message: "Post is already liked" });
+    }
+
     post.likes.push(userId);
     await post.save();
 
     return res.status(201).json({ message: "Like added successfully" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server Error" });
+  }
+};
+
+export const removeLike = async (req: Request, res: Response) => {
+  const postId: string = req.params.id;
+  const userId: string = req.body.userId;
+
+  try {
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    if (!post.likes.includes(userId)) {
+      return res.status(400).json({ message: "Post is not liked" });
+    }
+
+    // remove the like given current user id
+    post.likes.splice(post.likes.indexOf(userId), 1);
+    await post.save();
+
+    return res.status(201).json({ message: "Like removed successfully" });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Server Error" });

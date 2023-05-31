@@ -1,0 +1,36 @@
+.post-wrapper {
+  border: 1px solid black;
+}
+
+.btn-toggle-comments {
+  background-color: #f0f0f0;
+  color: #333;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-toggle-comments:hover {
+  background-color: #333;
+  color: #fff;
+}
+
+.btn-toggle-comments:active {
+  background-color: #555;
+  color: #fff;
+}
+
+.btn-like {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-size: 24px;
+  transition: color 0.3s;
+}
+
+.btn-like.liked {
+  color: red;
+}

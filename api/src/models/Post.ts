@@ -9,7 +9,7 @@ export interface IPost extends Document {
 }
 
 export interface Comment {
-  _id: string
+  _id: string;
   author: IUser["_id"];
   content: string;
 }
@@ -17,11 +17,7 @@ export interface Comment {
 const PostSchema: Schema = new Schema<IPost>({
   author: { type: Schema.Types.ObjectId, ref: "User" },
   content: { type: String, required: true },
-  likes: [
-    {
-      author: { type: String },
-    },
-  ],
+  likes: [String],
   comments: [
     {
       author: { type: String },

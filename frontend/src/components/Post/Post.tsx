@@ -4,7 +4,14 @@ import IPost from "../../interfaces/Post";
 import IUser from "../../interfaces/User";
 import { fetchUser } from "../../services/userServices";
 import Comment from "../Comment/Comment";
-import { addComment, deletePost, likePost } from "../../services/postServices";
+import {
+  addComment,
+  deletePost,
+  likePost,
+  unlikePost,
+} from "../../services/postServices";
+
+import "./Post.css";
 
 type PostProps = IPost;
 
@@ -15,7 +22,8 @@ function Post({ _id, author, content, comments, likes }: PostProps) {
     useState<IComment[]>(comments);
   const [errorMessage, setErrorMessage] = useState("");
   const [deleted, setDeleted] = useState(false);
-  const [currLikes, setCurrLikes] = useState(likes.length);
+  const [likesCount, setLikesCount] = useState(likes.length);
+  const [liked, setLiked] = useState(false);
   const currentUser = sessionStorage.getItem("user");
 
   useEffect(() => {
@@ -56,25 +64,34 @@ function Post({ _id, author, content, comments, likes }: PostProps) {
 
   const handleLikePost = async () => {
     try {
-      await likePost(_id);
-      setCurrLikes((prevLikes) => prevLikes + 1);
+      if (liked) {
+        await unlikePost(_id);
+        setLikesCount((prevLikes) => prevLikes - 1);
+      } else {
+        await likePost(_id);
+        setLikesCount((prevLikes) => prevLikes + 1);
+      }
+      setLiked(!liked);
     } catch (error: any) {
-      const message = "Failed to like post";
-      setErrorMessage(message);
+      setErrorMessage(error.response.data.message);
     }
   };
 
   return (
-    <div
-      style={{
-        border: "1px solid black",
-        padding: "1rem",
-      }}
-      key={_id}
-    >
+    <div className="post-wrapper" key={_id}>
       <h3>Post author (username): {postAuthor?.username}</h3>
       <h3>Post content: {content}</h3>
-      <button onClick={toggleComments}>
+      <h3>Likes: {likesCount}</h3>
+      {currentUser && (
+        <button
+          className={`btn-like ${liked ? "liked" : ""}`}
+          onClick={handleLikePost}
+        >
+          Like post
+        </button>
+      )}
+      <br></br>
+      <button className="btn-toggle-comments" onClick={toggleComments}>
         {showComments ? "Hide Comments" : "Show Comments"}
       </button>
       {showComments && (
@@ -97,8 +114,6 @@ function Post({ _id, author, content, comments, likes }: PostProps) {
           </div>
         </>
       )}
-      <h3>Likes: {currLikes}</h3>
-      {currentUser && <button onClick={handleLikePost}>Like post</button>}
 
       {currentUser === `"${author}"` && (
         <button onClick={handleDeletePost}>Delete post</button>
