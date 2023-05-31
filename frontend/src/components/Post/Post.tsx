@@ -6,6 +6,7 @@ import { fetchUser } from "../../services/userServices";
 import Comment from "../Comment/Comment";
 import {
   addComment,
+  checkIfLiked,
   deletePost,
   likePost,
   unlikePost,
@@ -23,12 +24,26 @@ function Post({ _id, author, content, comments, likes }: PostProps) {
   const [errorMessage, setErrorMessage] = useState("");
   const [deleted, setDeleted] = useState(false);
   const [likesCount, setLikesCount] = useState(likes.length);
-  const [liked, setLiked] = useState(false);
+  const [liked, setLiked] = useState<boolean>(false);
   const currentUser = sessionStorage.getItem("user");
 
   useEffect(() => {
     fetchUser(author).then((user) => setPostAuthor(user));
   }, [author]);
+
+  // check if already liked on start
+  useEffect(() => {
+    const fetchLikedStatus = async () => {
+      try {
+        const isLiked = await checkIfLiked(_id);
+
+        setLiked(isLiked);
+      } catch (error) {
+        console.error("Error checking if liked:", error);
+      }
+    };
+    fetchLikedStatus();
+  }, []);
 
   const [showComments, setShowComments] = useState(false);
 
@@ -44,7 +59,7 @@ function Post({ _id, author, content, comments, likes }: PostProps) {
       setNewComment("");
     } catch (error: any) {
       const message = "Failed to add comment";
-      setErrorMessage(message);
+      setErrorMessage(error.response.data.message || message);
     }
   };
 
@@ -112,13 +127,13 @@ function Post({ _id, author, content, comments, likes }: PostProps) {
               <Comment {...comment} key={comment._id} />
             ))}
           </div>
+          {errorMessage && <div className="alert error">{errorMessage}</div>}
         </>
       )}
 
       {currentUser === `"${author}"` && (
         <button onClick={handleDeletePost}>Delete post</button>
       )}
-      {errorMessage && <div className="alert error">{errorMessage}</div>}
     </div>
   );
 }

@@ -11,7 +11,10 @@ export const getPosts = async (req: Request, res: Response) => {
 
 export const addPost = async (req: Request, res: Response) => {
   const content: string = req.body.content;
-  const userId = req.body.userId;
+  if (!content) {
+    return res.status(400).json({ message: "Post content is required" });
+  }
+  const userId: string = req.body.userId;
 
   const post = new Post({
     author: userId,
@@ -128,5 +131,21 @@ export const removeLike = async (req: Request, res: Response) => {
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Server Error" });
+  }
+};
+
+export const checkIfLiked = async (req: Request, res: Response) => {
+  const postId: string = req.params.id;
+  const userId: string = req.body.userId;
+
+  const post = await Post.findById(postId);
+  if (!post) {
+    return res.status(404).json({ message: "Post not found" });
+  }
+
+  if (post.likes.includes(userId)) {
+    return res.status(200).json({ liked: true })
+  } else {
+    return res.status(200).json({ liked: false })
   }
 };

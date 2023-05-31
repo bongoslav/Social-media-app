@@ -10,6 +10,7 @@ import "./Home.css";
 export function Home() {
   const [posts, setPosts] = useState<IPost[]>([]);
   const [newPostContent, setNewPostContent] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const isLoggedIn = sessionStorage.getItem("user");
 
   useEffect(() => {
@@ -18,6 +19,7 @@ export function Home() {
         const posts = await fetchPosts();
         setPosts(posts);
       } catch (error) {
+        // properly handle axios typescript errors
         let message = "Something went wrong";
         if (error instanceof AxiosError) message = error.message;
         console.error("Failed to fetch posts: ", message);
@@ -37,25 +39,27 @@ export function Home() {
       // Fetch the updated list of posts
       const fetchedPosts = await fetchPosts();
       setPosts(fetchedPosts);
-    } catch (error) {
-      console.error("Failed to create post:", error);
+    } catch (error: any) {
+      // not so properly handled axios typescript error
+      const message = "Failed to add comment";
+      setErrorMessage(error.response.data.message || message);
     }
   };
 
   return (
     <div className="wrapper">
       {isLoggedIn && (
-        // don't crash the app when validation fails. use same as comment validation
         <div>
-          <form onSubmit={handlePostSubmit}>
-            <input
-              type="text"
-              value={newPostContent}
-              onChange={(event) => setNewPostContent(event.target.value)}
-              placeholder="New Post"
-            />
-            <button type="submit">Post</button>
-          </form>
+          <input
+            type="text"
+            value={newPostContent}
+            onChange={(event) => setNewPostContent(event.target.value)}
+            placeholder="New Post Content"
+          />
+          <button type="submit" onClick={handlePostSubmit}>
+            Post
+          </button>
+          {errorMessage && <p>{errorMessage}</p>}
         </div>
       )}
 

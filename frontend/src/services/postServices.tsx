@@ -88,3 +88,15 @@ export async function unlikePost(postId: string) {
 
   return response.data
 }
+
+export async function checkIfLiked(postId: string): Promise<boolean> {
+  const response = await axios.post(
+    `http://localhost:3000/posts/${postId}/check-if-liked`,
+    {
+      userId: sessionStorage.getItem("user")?.replace(/"/g, ""),
+    },
+    { withCredentials: true }
+  );
+
+  return response.data.liked
+}
