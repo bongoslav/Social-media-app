@@ -36,7 +36,6 @@ function LoginPage() {
       <label htmlFor="email">Email</label>
       <input
         type="text"
-        placeholder="Email"
         name="email"
         id="email"
         onChange={handleChange}
@@ -44,13 +43,12 @@ function LoginPage() {
       <label htmlFor="password">Password</label>
       <input
         type="password"
-        placeholder="Password"
         name="password"
         id="password"
         onChange={handleChange}
       />
-      {err && <div>{err}</div>}
       <button onClick={handleLogin}>Login</button>
+      {err && <div className="err-msg">{err}</div>}
     </div>
   );
 }
