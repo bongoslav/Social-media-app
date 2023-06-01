@@ -39,7 +39,7 @@ function RegisterPage() {
         navigate("/login");
       }
     } catch (err: any) {
-      const errMsg: string = err.response.data[0].msg;
+      const errMsg: string = err.response.data.msg;
       setErr(errMsg);
     }
   };

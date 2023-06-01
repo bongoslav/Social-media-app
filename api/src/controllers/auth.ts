@@ -14,18 +14,18 @@ export const login = async (req: Request, res: Response) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(422).send(errors.array());
+      return res.status(422).send(errors.array()[0]);
     }
 
     const user: IUser | null = await UserModel.findOne({ email });
     if (!user) {
-      return res.status(400).json({ error: "No such user exists" });
+      return res.status(400).json({ msg: "No such user exists" });
     }
 
     // Compare the password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(401).json({ error: "Incorrect password" });
+      return res.status(401).json({ msg: "Incorrect password" });
     }
 
     // cookie
@@ -38,7 +38,6 @@ export const login = async (req: Request, res: Response) => {
       .status(200)
       .json({ id: user._id, email: user.email, username: user.username });
   } catch (err: any) {
-    console.error(err.message);
     res.status(500).send("Server error");
   }
 };
@@ -64,7 +63,7 @@ export const register = async (req: Request, res: Response) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(422).json(errors.array());
+      return res.status(422).json(errors.array()[0]);
     }
 
     // Check if user already exists

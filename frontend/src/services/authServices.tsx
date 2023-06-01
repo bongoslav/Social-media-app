@@ -18,7 +18,6 @@ export async function logoutUser() {
     sessionStorage.removeItem("user");
     window.location.reload();
   } catch (error) {
-    console.error("Error logging out:", error);
-    throw error;
+    throw new Error("Error logging out");
   }
 }

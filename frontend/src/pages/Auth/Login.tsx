@@ -2,13 +2,12 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-// TODO fix error message
 function LoginPage() {
   const [inputs, setInputs] = useState({
     email: "",
     password: "",
   });
-  const [err, setErr] = useState(null);
+  const [err, setErr] = useState("");
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -18,15 +17,24 @@ function LoginPage() {
   const handleLogin = async (e: React.MouseEvent) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:3000/auth/login", inputs, {
-        withCredentials: true,
-      });
+      const res = await axios.post("http://localhost:3000/auth/login", inputs);
 
-      sessionStorage.setItem("user", JSON.stringify(res.data.id));
-      navigate("/");
-      window.location.reload();
+      if (res.status !== 200) {
+        const errors = res.data;
+
+        if (Array.isArray(errors)) {
+          const errorMessages = errors.map((error) => error.msg);
+          setErr(errorMessages.join(", "));
+        } else {
+          setErr("Login failed");
+        }
+      } else {
+        navigate("/");
+        window.location.reload();
+      }
     } catch (err: any) {
-      setErr(err.response);
+      const errMsg: string = err.response.data.msg;
+      setErr(errMsg);
     }
   };
 
@@ -46,7 +54,7 @@ function LoginPage() {
           name="password"
           onChange={handleChange}
         />
-        {err && err}
+        {err && <div>{err}</div>}
         <button onClick={handleLogin}>Login</button>
       </form>
     </div>
