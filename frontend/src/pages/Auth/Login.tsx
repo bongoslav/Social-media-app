@@ -17,21 +17,12 @@ function LoginPage() {
   const handleLogin = async (e: React.MouseEvent) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:3000/auth/login", inputs);
-
-      if (res.status !== 200) {
-        const errors = res.data;
-
-        if (Array.isArray(errors)) {
-          const errorMessages = errors.map((error) => error.msg);
-          setErr(errorMessages.join(", "));
-        } else {
-          setErr("Login failed");
-        }
-      } else {
-        navigate("/");
-        window.location.reload();
-      }
+      const res = await axios.post("http://localhost:3000/auth/login", inputs, {
+        withCredentials: true,
+      });
+      sessionStorage.setItem("user", JSON.stringify(res.data.id));
+      navigate("/");
+      window.location.reload();
     } catch (err: any) {
       const errMsg: string = err.response.data.msg;
       setErr(errMsg);
