@@ -123,9 +123,13 @@ function Post({ _id, author, content, comments, likes }: PostProps) {
             </>
           )}
           <div>
-            {existingComments.map((comment: IComment) => (
-              <Comment {...comment} key={comment._id} />
-            ))}
+            {existingComments.length === 0 ? (
+              <div>No Comments</div>
+            ) : (
+              existingComments.map((comment: IComment) => (
+                <Comment {...comment} key={comment._id} />
+              ))
+            )}
           </div>
           {errorMessage && <div className="alert error">{errorMessage}</div>}
         </>

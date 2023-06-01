@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+// TODO fix error message
 function LoginPage() {
   const [inputs, setInputs] = useState({
     email: "",
