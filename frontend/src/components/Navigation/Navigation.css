@@ -31,7 +31,6 @@ nav .navbar-item:hover {
   color: #24283b;
 }
 
-
 .header-right {
   float: right;
   justify-content: space-between;
@@ -50,4 +49,9 @@ nav .navbar-item:hover {
   .header-right {
     float: none;
   }
+}
+
+.navbar-item.button {
+  background-color: transparent;
+  color: #c0caf5;
 }

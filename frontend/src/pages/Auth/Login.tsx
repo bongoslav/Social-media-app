@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import "./Login.css";
 
 function LoginPage() {
   const [inputs, setInputs] = useState({
@@ -30,24 +31,26 @@ function LoginPage() {
   };
 
   return (
-    <div>
+    <div className="login-container">
       <h1>Login</h1>
-      <form>
-        <input
-          type="text"
-          placeholder="Email"
-          name="email"
-          onChange={handleChange}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          name="password"
-          onChange={handleChange}
-        />
-        {err && <div>{err}</div>}
-        <button onClick={handleLogin}>Login</button>
-      </form>
+      <label htmlFor="email">Email</label>
+      <input
+        type="text"
+        placeholder="Email"
+        name="email"
+        id="email"
+        onChange={handleChange}
+      />
+      <label htmlFor="password">Password</label>
+      <input
+        type="password"
+        placeholder="Password"
+        name="password"
+        id="password"
+        onChange={handleChange}
+      />
+      {err && <div>{err}</div>}
+      <button onClick={handleLogin}>Login</button>
     </div>
   );
 }

@@ -19,9 +19,13 @@ function Navigation() {
             <NavLink to="/profile" className="navbar-item">
               Profile
             </NavLink>
-            <button className="navbar-item" onClick={handleLogout}>
+            <NavLink
+              to="/"
+              className="navbar-item button"
+              onClick={handleLogout}
+            >
               Logout
-            </button>
+            </NavLink>
           </>
         ) : (
           <>
