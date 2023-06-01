@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { logoutUser } from "../../services/authServices";
 import "./Navigation.css";
 
@@ -9,34 +9,32 @@ function Navigation() {
   };
 
   return (
-    <header className="navbar">
+    <nav>
       <Link to="/" className="navbar-logo">
         Social media app
       </Link>
-      <nav>
-        <div className="navbar-item">
-          {isAuthenticated ? (
-            <>
-              <Link to="/profile" className="navbar-item">
-                Profile
-              </Link>
-              <button className="navbar-item" onClick={handleLogout}>
-                Logout
-              </button>
-            </>
-          ) : (
-            <>
-              <Link to="/login" className="navbar-item">
-                Login
-              </Link>
-              <Link to="/register" className="navbar-item">
-                Register
-              </Link>
-            </>
-          )}
-        </div>
-      </nav>
-    </header>
+      <div className="header-right">
+        {isAuthenticated ? (
+          <>
+            <NavLink to="/profile" className="navbar-item">
+              Profile
+            </NavLink>
+            <button className="navbar-item" onClick={handleLogout}>
+              Logout
+            </button>
+          </>
+        ) : (
+          <>
+            <NavLink to="/login" className="navbar-item">
+              Login
+            </NavLink>
+            <NavLink to="/register" className="navbar-item">
+              Register
+            </NavLink>
+          </>
+        )}
+      </div>
+    </nav>
   );
 }
 
