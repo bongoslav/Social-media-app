@@ -1,11 +1,10 @@
-/* Style the header with a grey background and some padding */
 nav {
   overflow: hidden;
   background-color: #1a1b26;
   padding: 5px 10px;
+  border-bottom: solid 0.1rem #5a4a78;
 }
 
-/* Style the header links */
 nav a {
   float: left;
   color: #c0caf5;
@@ -17,26 +16,22 @@ nav a {
   border-radius: 4px;
 }
 
-/* Style the logo link (notice that we set the same value of line-height and font-size to prevent the header to increase when the font gets bigger */
 nav a.navbar-logo {
   font-size: 25px;
   font-weight: bold;
 }
 
-/* Style the active/current link*/
 nav a.active {
   background-color: #7dcfff;
   color: #24283b;
 }
 
-/* Change the background color on mouse-over */
 nav .navbar-item:hover {
   background-color: #7aa2f7;
   color: #24283b;
 }
 
 
-/* Float the link section to the right */
 .header-right {
   float: right;
   justify-content: space-between;
@@ -46,7 +41,6 @@ nav .navbar-item:hover {
   margin: 0 10px;
 }
 
-/* Add media queries for responsiveness - when the screen is 500px wide or less, stack the links on top of each other */
 @media screen and (max-width: 500px) {
   nav a {
     float: none;
