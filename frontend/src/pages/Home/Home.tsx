@@ -47,19 +47,19 @@ export function Home() {
   };
 
   return (
-    <div className="wrapper">
+    <div className="feed-container">
       {isLoggedIn && (
-        <div>
-          <input
-            type="text"
+        <div className="new-post-container">
+          <textarea
             value={newPostContent}
             onChange={(event) => setNewPostContent(event.target.value)}
-            placeholder="New Post Content"
+            maxLength={280}
+            rows={5}
           />
-          <button type="submit" onClick={handlePostSubmit}>
+          <button type="submit" className="btn-add-post" onClick={handlePostSubmit}>
             Post
           </button>
-          {errorMessage && <p>{errorMessage}</p>}
+          {errorMessage && <div className="err-msg">{errorMessage}</div>}
         </div>
       )}
 

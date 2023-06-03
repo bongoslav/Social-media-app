@@ -6,4 +6,5 @@ export default interface IPost {
   content: string;
   comments: IComment[];
   likes: { id: string }[];
+  createdAt: Date;
 }

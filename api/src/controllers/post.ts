@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
 import Post from "../models/Post";
 import { Comment } from "../models/Post";
-import User, { IUser } from "../models/User";
-import { get } from "lodash";
+import User from "../models/User";
 import mongoose from "mongoose";
 
 export const getPosts = async (req: Request, res: Response) => {
@@ -19,6 +18,7 @@ export const addPost = async (req: Request, res: Response) => {
   const post = new Post({
     author: userId,
     content: content,
+    createdAt: new Date(), // set the current date and time
   });
 
   await User.findByIdAndUpdate(
@@ -73,6 +73,7 @@ export const addComment = async (req: Request, res: Response) => {
       _id: new mongoose.Types.ObjectId().toString(),
       author: userId,
       content: content,
+      createdAt: new Date(),
     };
 
     post.comments.push(comment);
@@ -144,8 +145,8 @@ export const checkIfLiked = async (req: Request, res: Response) => {
   }
 
   if (post.likes.includes(userId)) {
-    return res.status(200).json({ liked: true })
+    return res.status(200).json({ liked: true });
   } else {
-    return res.status(200).json({ liked: false })
+    return res.status(200).json({ liked: false });
   }
 };

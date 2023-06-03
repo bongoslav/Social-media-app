@@ -16,7 +16,7 @@ import "./Post.css";
 
 type PostProps = IPost;
 
-function Post({ _id, author, content, comments, likes }: PostProps) {
+function Post({ _id, author, content, comments, likes, createdAt }: PostProps) {
   const [postAuthor, setPostAuthor] = useState<IUser | null>(null);
   const [newComment, setNewComment] = useState("");
   const [existingComments, setExistingComments] =
@@ -26,6 +26,33 @@ function Post({ _id, author, content, comments, likes }: PostProps) {
   const [likesCount, setLikesCount] = useState(likes.length);
   const [liked, setLiked] = useState<boolean>(false);
   const currentUser = sessionStorage.getItem("user");
+
+  const formatDate = (date: Date) => {
+    const hours = String(date.getUTCHours()).padStart(2, "0");
+    const minutes = String(date.getUTCMinutes()).padStart(2, "0");
+    const day = String(date.getUTCDate()).padStart(2, "0");
+    const monthIndex = date.getUTCMonth();
+    const year = String(date.getUTCFullYear()).slice(-2);
+
+    const monthAbbreviations = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+
+    const monthAbbreviation = monthAbbreviations[monthIndex];
+
+    return `${hours}:${minutes} | ${day}-${monthAbbreviation}-${year}`;
+  };
 
   useEffect(() => {
     fetchUser(author).then((user) => setPostAuthor(user));
@@ -94,9 +121,10 @@ function Post({ _id, author, content, comments, likes }: PostProps) {
 
   return (
     <div className="post-wrapper" key={_id}>
-      <h3>Post author (username): {postAuthor?.username}</h3>
-      <h3>Post content: {content}</h3>
-      <h3>Likes: {likesCount}</h3>
+      <h2 className="post-author">{postAuthor?.username}</h2>
+      <p className="post-content">{content}</p>
+      <p className="post-likes">Likes: {likesCount}</p>
+      <p className="post-date">{formatDate(new Date(createdAt))}</p>
       {currentUser && (
         <button
           className={`btn-like ${liked ? "liked" : ""}`}
@@ -105,7 +133,6 @@ function Post({ _id, author, content, comments, likes }: PostProps) {
           Like post
         </button>
       )}
-      <br></br>
       <button className="btn-toggle-comments" onClick={toggleComments}>
         {showComments ? "Hide Comments" : "Show Comments"}
       </button>
@@ -117,7 +144,6 @@ function Post({ _id, author, content, comments, likes }: PostProps) {
                 type="text"
                 value={newComment}
                 onChange={(e) => setNewComment(e.target.value)}
-                placeholder="Add a comment..."
               />
               <button onClick={handleAddComment}>Add Comment</button>
             </>
@@ -136,7 +162,9 @@ function Post({ _id, author, content, comments, likes }: PostProps) {
       )}
 
       {currentUser === `"${author}"` && (
-        <button onClick={handleDeletePost}>Delete post</button>
+        <button className="btn-delete-post" onClick={handleDeletePost}>
+          Delete post
+        </button>
       )}
     </div>
   );
