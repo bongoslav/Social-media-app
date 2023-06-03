@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "./Register.css"
 
 function RegisterPage() {
   const [inputs, setInputs] = useState({
@@ -45,36 +46,33 @@ function RegisterPage() {
   };
 
   return (
-    <div>
+    <div className="register-container">
       <h1>Register</h1>
-      <form>
-        <input
-          type="text"
-          placeholder="Email"
-          name="email"
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          placeholder="Username"
-          name="username"
-          onChange={handleChange}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          name="password"
-          onChange={handleChange}
-        />
-        <input
-          type="password"
-          placeholder="Confirm Password"
-          name="confirmPassword"
-          onChange={handleChange}
-        />
-        {err && <p>{err}</p>}
-        <button onClick={handleRegister}>Register</button>
-      </form>
+      <label htmlFor="email">Email</label>
+      <input type="text" name="email" id="email" onChange={handleChange} />
+      <label htmlFor="username">Username</label>
+      <input
+        type="text"
+        name="username"
+        id="username"
+        onChange={handleChange}
+      />
+      <label htmlFor="password">Password</label>
+      <input
+        type="password"
+        name="password"
+        id="password"
+        onChange={handleChange}
+      />
+      <label htmlFor="confirmPassword">Confirm Password</label>
+      <input
+        type="password"
+        name="confirmPassword"
+        id="confirmPassword"
+        onChange={handleChange}
+      />
+      <button onClick={handleRegister}>Register</button>
+      {err && <div className="err-msg">{err}</div>}
     </div>
   );
 }
