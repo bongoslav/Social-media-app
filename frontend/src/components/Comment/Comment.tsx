@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import IComment from "../../interfaces/Comment";
 import IUser from "../../interfaces/User";
 import { fetchUser } from "../../services/userServices";
+import "./Comment.css";
 
 export default function Comment({ _id, author, content, createdAt }: IComment) {
   const [commentAuthor, setCommentAuthor] = useState<IUser | null>(null);
@@ -11,7 +12,7 @@ export default function Comment({ _id, author, content, createdAt }: IComment) {
     const minutes = String(date.getUTCMinutes()).padStart(2, "0");
     const day = String(date.getUTCDate()).padStart(2, "0");
     const monthIndex = date.getUTCMonth();
-    const year = String(date.getUTCFullYear()).slice(-2);
+    // const year = String(date.getUTCFullYear()).slice(-2);
 
     const monthAbbreviations = [
       "Jan",
@@ -30,7 +31,7 @@ export default function Comment({ _id, author, content, createdAt }: IComment) {
 
     const monthAbbreviation = monthAbbreviations[monthIndex];
 
-    return `${hours}:${minutes} | ${day}-${monthAbbreviation}-${year}`;
+    return `${hours}:${minutes} · ${monthAbbreviation} ${day}`;
   };
 
   useEffect(() => {
@@ -38,10 +39,12 @@ export default function Comment({ _id, author, content, createdAt }: IComment) {
   }, [author]);
 
   return (
-    <div key={_id}>
-      <h2>{commentAuthor?.username}</h2>
-      <h3>{content}</h3>
-      <h3>{formatDate(new Date(createdAt))}</h3>
+    <div key={_id} className="comment-wrapper">
+      <div className="username-date-wrapper">
+        <h2 id="author">{commentAuthor?.username}</h2>
+        <p id="date">{formatDate(new Date(createdAt))}</p>
+      </div>
+      <p id="content">{content}</p>
     </div>
   );
 }

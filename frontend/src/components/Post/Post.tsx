@@ -155,7 +155,7 @@ function Post({ _id, author, content, comments, likes, createdAt }: PostProps) {
         <>
           <div>
             {existingComments.length === 0 ? (
-              <div>No Comments</div>
+              <p id="no-comments">Wow such empty...</p>
             ) : (
               existingComments.map((comment: IComment) => (
                 <Comment {...comment} key={comment._id} />

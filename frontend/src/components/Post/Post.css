@@ -83,7 +83,7 @@
 .add-comment-wrapper {
   display: flex;
   align-items: center;
-  margin-top: 10px;
+  margin-top: 30px;
 }
 
 .add-comment-wrapper input {
@@ -114,6 +114,10 @@
   padding: 10px;
   border-radius: 4px;
   font-size: 16px;
+}
+
+#no-comments {
+  color: #d5d6db;
 }
 
 @media (max-width: 768px) {
