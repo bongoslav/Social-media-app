@@ -42,6 +42,11 @@
   border-radius: 4px;
   cursor: pointer;
   font-size: 20px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #358838;
 }
 
 .register-container .err-msg {
