@@ -16,6 +16,9 @@ function Navigation() {
       <div className="header-right">
         {isAuthenticated ? (
           <>
+            <NavLink to="/chat" className="navbar-item button">
+              Chat
+            </NavLink>
             <NavLink to="/profile" className="navbar-item">
               Profile
             </NavLink>

@@ -32,7 +32,7 @@ function Post({ _id, author, content, comments, likes, createdAt }: PostProps) {
     const minutes = String(date.getUTCMinutes()).padStart(2, "0");
     const day = String(date.getUTCDate()).padStart(2, "0");
     const monthIndex = date.getUTCMonth();
-    const year = String(date.getUTCFullYear()).slice(-2);
+    // const year = String(date.getUTCFullYear()).slice(-2);
 
     const monthAbbreviations = [
       "Jan",
@@ -51,7 +51,7 @@ function Post({ _id, author, content, comments, likes, createdAt }: PostProps) {
 
     const monthAbbreviation = monthAbbreviations[monthIndex];
 
-    return `${hours}:${minutes} | ${day}-${monthAbbreviation}-${year}`;
+    return `${hours}:${minutes} · ${monthAbbreviation} ${day}`;
   };
 
   useEffect(() => {
@@ -121,33 +121,38 @@ function Post({ _id, author, content, comments, likes, createdAt }: PostProps) {
 
   return (
     <div className="post-wrapper" key={_id}>
-      <h2 className="post-author">{postAuthor?.username}</h2>
+      <div className="post-header">
+        <div className="username-date-container">
+          <h2 className="post-author">{postAuthor?.username}</h2>
+          <p className="post-date">{formatDate(new Date(createdAt))}</p>
+        </div>
+        {currentUser === `"${author}"` && (
+          <button className="btn-delete-post" onClick={handleDeletePost}>
+            Delete post
+          </button>
+        )}
+      </div>
+
       <p className="post-content">{content}</p>
-      <p className="post-likes">Likes: {likesCount}</p>
-      <p className="post-date">{formatDate(new Date(createdAt))}</p>
-      {currentUser && (
-        <button
-          className={`btn-like ${liked ? "liked" : ""}`}
-          onClick={handleLikePost}
-        >
-          Like post
+
+      <div className="post-actions">
+        <p className="post-likes">{likesCount}</p>
+        {currentUser && (
+          <button
+            className={`btn-like ${liked ? "liked" : ""}`}
+            onClick={handleLikePost}
+          >
+            {liked ? "💔" : "❤️"}
+          </button>
+        )}
+
+        <button className="btn-toggle-comments" onClick={toggleComments}>
+          💬
         </button>
-      )}
-      <button className="btn-toggle-comments" onClick={toggleComments}>
-        {showComments ? "Hide Comments" : "Show Comments"}
-      </button>
+      </div>
+
       {showComments && (
         <>
-          {currentUser && (
-            <>
-              <input
-                type="text"
-                value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
-              />
-              <button onClick={handleAddComment}>Add Comment</button>
-            </>
-          )}
           <div>
             {existingComments.length === 0 ? (
               <div>No Comments</div>
@@ -157,14 +162,18 @@ function Post({ _id, author, content, comments, likes, createdAt }: PostProps) {
               ))
             )}
           </div>
-          {errorMessage && <div className="alert error">{errorMessage}</div>}
+          {currentUser && (
+            <div className="add-comment-wrapper">
+              <input
+                type="text"
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+              />
+              <button className="btn-add-comment" onClick={handleAddComment}>Add Comment</button>
+            </div>
+          )}
+          {errorMessage && <div className="err-msg">{errorMessage}</div>}
         </>
-      )}
-
-      {currentUser === `"${author}"` && (
-        <button className="btn-delete-post" onClick={handleDeletePost}>
-          Delete post
-        </button>
       )}
     </div>
   );

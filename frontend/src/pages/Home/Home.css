@@ -13,7 +13,7 @@ textarea {
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 20px 0;
 }
 
 .btn-add-post {
@@ -23,13 +23,6 @@ textarea {
 
 .btn-add-post:hover {
   background-color: #1991db;
-}
-
-.feed-container button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
 }
 
 .err-msg {
@@ -51,6 +44,6 @@ textarea {
 
 @media screen and (min-width: 1024px) {
   .feed-container {
-    width: 40%; /* Make the wrapper 40% wide on full screens */
+    width: 50%; /* Make the wrapper 40% wide on full screens */
   }
 }
