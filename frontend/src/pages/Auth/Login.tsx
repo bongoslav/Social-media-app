@@ -47,7 +47,7 @@ function LoginPage() {
         id="password"
         onChange={handleChange}
       />
-      <button onClick={handleLogin}>Login</button>
+      <button className="btn-login" onClick={handleLogin}>Login</button>
       {err && <div className="err-msg">{err}</div>}
     </div>
   );

@@ -71,7 +71,7 @@ function RegisterPage() {
         id="confirmPassword"
         onChange={handleChange}
       />
-      <button onClick={handleRegister}>Register</button>
+      <button className="btn-register" onClick={handleRegister}>Register</button>
       {err && <div className="err-msg">{err}</div>}
     </div>
   );
