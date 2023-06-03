@@ -1,24 +1,17 @@
-import { useRouteError } from "react-router-dom";
-import Navigation from "../../components/Navigation/Navigation";
+import { useLocation } from "react-router-dom";
+import "./Error.css";
 
 function ErrorPage() {
-  const error: any = useRouteError();
-
-  let message = "Something went wrong!";
-
-  if (error.status === 500) {
-    message = error.data.message;
-  }
-
-  if (error.status === 404) {
-    message = "Could not find resource or page.";
-  }
+  const location = useLocation();
 
   return (
-    <>
-      <Navigation />
-      <p>{message}</p>
-    </>
+    <div className="error-container">
+      <h1 className="error-title">404 - Page Not Found</h1>
+      <p className="error-message">
+        The requested URL <span className="error-url">{location.pathname}</span>{" "}
+        was not found.
+      </p>
+    </div>
   );
 }
 

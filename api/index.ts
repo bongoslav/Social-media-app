@@ -7,6 +7,7 @@ import postRoutes from "./src/routes/post";
 import authRoutes from "./src/routes/auth";
 import usersRoutes from "./src/routes/users";
 import cors from "cors";
+import errorMiddleware from "./src/middleware/errorMiddleware";
 
 dotenv.config();
 
@@ -42,6 +43,12 @@ mongoose.connection.on("error", (error: Error) => {
 app.use("/users", usersRoutes);
 app.use("/posts", postRoutes);
 app.use("/auth", authRoutes);
+app.use((req, res, next) => {
+  const error = new Error("Not found");
+  res.status(404);
+  next(error);
+});
+app.use(errorMiddleware);
 
 const server = app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
