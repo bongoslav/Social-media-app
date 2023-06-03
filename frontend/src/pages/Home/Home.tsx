@@ -51,15 +51,23 @@ export function Home() {
       {isLoggedIn && (
         <div className="new-post-container">
           <textarea
+            className="post-textarea"
             value={newPostContent}
             onChange={(event) => setNewPostContent(event.target.value)}
             maxLength={280}
             rows={5}
+            placeholder="What's on your mind?"
           />
-          <button type="submit" className="btn-add-post" onClick={handlePostSubmit}>
-            Post
-          </button>
-          {errorMessage && <div className="err-msg">{errorMessage}</div>}
+          <div className="post-actions">
+            <button
+              type="submit"
+              className="btn-add-post"
+              onClick={handlePostSubmit}
+            >
+              Post
+            </button>
+          </div>
+          {errorMessage && <div className="err-msg-post">{errorMessage}</div>}
         </div>
       )}
 

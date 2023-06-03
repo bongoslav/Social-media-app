@@ -1,9 +1,25 @@
-textarea {
-  resize: none;
+.new-post-container {
+  display: flex;
+  flex-direction: column;
+  background-color: #1a1b26;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 20px;
   width: 100%;
-  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-  -moz-box-sizing: border-box; /* Firefox, other Gecko */
-  box-sizing: border-box;
+}
+
+.post-textarea {
+  width: 100%;
+  resize: none;
+  border: none;
+  background-color: transparent;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #ccc;
+  outline: none;
+  padding: 0;
+  margin-bottom: 10px;
 }
 
 .feed-container {
@@ -17,23 +33,31 @@ textarea {
 }
 
 .btn-add-post {
-  background-color: #1da1f2;
-  color: #ffffff;
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 15px;
+  font-size: 16px;
+  cursor: pointer;
+   margin-left: auto;
+  margin-right: auto;
+  transition: background-color 0.3s ease;
 }
 
 .btn-add-post:hover {
-  background-color: #1991db;
+  background-color: #358838;
 }
 
-.err-msg {
+.err-msg-post {
   margin-top: 10px;
   background-color: #8c4351;
   color: #d5d6db;
-  text-align: center;
-  max-width: 100%;
   padding: 10px;
   border-radius: 4px;
   font-size: 16px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 @media screen and (max-width: 768px) {
