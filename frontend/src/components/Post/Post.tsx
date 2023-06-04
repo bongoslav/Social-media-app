@@ -136,7 +136,7 @@ function Post({ _id, author, content, comments, likes, createdAt }: PostProps) {
       <p className="post-content">{content}</p>
 
       <div className="post-actions">
-        <p className="post-likes">{likesCount}</p>
+        <p className="post-likes">{likesCount} ❤️</p>
         {currentUser && (
           <button
             className={`btn-like ${liked ? "liked" : ""}`}
