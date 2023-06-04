@@ -69,7 +69,7 @@ export const register = async (req: Request, res: Response) => {
     // Check if user already exists
     let user = await UserModel.findOne({ $or: [{ email }, { username }] });
     if (user) {
-      return res.status(400).json({ error: "User already exists" });
+      return res.status(400).json({ msg: "User already exists" });
     }
 
     // Hash password
@@ -87,6 +87,6 @@ export const register = async (req: Request, res: Response) => {
     return res.status(201).json(user);
   } catch (err: any) {
     console.error(err.message);
-    res.status(500).json({ error: "Server error" });
+    res.status(500).json({ msg: "Server error" });
   }
 };
