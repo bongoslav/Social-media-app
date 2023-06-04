@@ -136,7 +136,9 @@ function Post({ _id, author, content, comments, likes, createdAt }: PostProps) {
       <p className="post-content">{content}</p>
 
       <div className="post-actions">
-        <p className="post-likes">{likesCount} ❤️</p>
+        <p className="post-likes">
+          {likesCount} {currentUser ? "" : "❤️"}
+        </p>
         {currentUser && (
           <button
             className={`btn-like ${liked ? "liked" : ""}`}
@@ -169,7 +171,9 @@ function Post({ _id, author, content, comments, likes, createdAt }: PostProps) {
                 value={newComment}
                 onChange={(e) => setNewComment(e.target.value)}
               />
-              <button className="btn-add-comment" onClick={handleAddComment}>Add Comment</button>
+              <button className="btn-add-comment" onClick={handleAddComment}>
+                Add Comment
+              </button>
             </div>
           )}
           {errorMessage && <div className="err-msg">{errorMessage}</div>}
