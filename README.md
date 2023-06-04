@@ -42,7 +42,7 @@ cd <project_name>/frontend/
 npm install
 npm run dev
 ```
-Client is running on port 5147 and server on port 3000.
+Client is running on port 5173 and server on port 3000.
 
 >There is a hidden .env file in /api/ . It contains jwt secret string as well as MongoDB connection string. To run locally you would need to setup the .env file with a correct mongo URL connection similar to this:
 ```javascript
