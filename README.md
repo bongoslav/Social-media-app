@@ -67,5 +67,7 @@ mongoURL = "mongodb+srv://<username>:<password>@social-media-app.tj1jh2n.mongodb
 ![another home](demo%20images/home2.png)
 
 ## No user preview
-
 ![no user](demo%20images/logged-out.png)
+
+## Invalid url page
+![invalid url](demo%20images/error-page.png)
