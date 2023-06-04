@@ -32,23 +32,22 @@ function LoginPage() {
 
   return (
     <div className="login-container">
-      <h1>Login</h1>
-      <label htmlFor="email">Email</label>
-      <input
-        type="text"
-        name="email"
-        id="email"
-        onChange={handleChange}
-      />
-      <label htmlFor="password">Password</label>
-      <input
-        type="password"
-        name="password"
-        id="password"
-        onChange={handleChange}
-      />
-      <button className="btn-login" onClick={handleLogin}>Login</button>
-      {err && <div className="err-msg">{err}</div>}
+      <form>
+        <h1>Login</h1>
+        <label htmlFor="email">Email</label>
+        <input type="text" name="email" id="email" onChange={handleChange} />
+        <label htmlFor="password">Password</label>
+        <input
+          type="password"
+          name="password"
+          id="password"
+          onChange={handleChange}
+        />
+        <button className="btn-login" onClick={handleLogin}>
+          Login
+        </button>
+        {err && <div className="err-msg">{err}</div>}
+      </form>
     </div>
   );
 }
