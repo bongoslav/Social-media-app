@@ -16,6 +16,7 @@ Some TODOS:
 - add websockets
 - add profile page
 - add upload images functionality for profile and post
+- add admin panel with data visualization
 - add caching mby with Redis
 - finish the tests
 
