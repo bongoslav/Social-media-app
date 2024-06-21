@@ -11,15 +11,6 @@ The app was built using:
 
 I have used **validation**, server and client side **authentication**, **error handling**.
 
-Some TODOS:
-
-- add websockets
-- add profile page
-- add upload images functionality for profile and post
-- add admin panel with data visualization
-- add caching mby with Redis
-- finish the tests
-
 # Running the app
 
 - Clone the repository
